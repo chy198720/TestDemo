@@ -36,7 +36,8 @@
         <activity android:name=".my.LoginActivity"/>
         <activity android:name=".classification.strategy.ColumnActivity"/>
         <activity android:name=".select.ItemActivity"/>
-        <activity android:name=".classification.strategy.LmSkipActivity"/>
+        <activity android:name=".classification.strategy.StrategyItemActivity"/>
+        <activity android:name=".classification.sku.SKURecycleActivity"/>
 
         <activity
             android:name="com.mob.tools.MobUIShell"

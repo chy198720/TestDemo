@@ -23,6 +23,7 @@ import com.lanou3g.testdemo.select.day.DayAdapter;
 import com.lanou3g.testdemo.select.day.DayAdapter.OnItemClickListener;
 import com.lanou3g.testdemo.select.day.DayBean;
 import com.lanou3g.testdemo.task.BaseFragment;
+import com.lanou3g.testdemo.task.NetTool;
 import com.lanou3g.testdemo.task.URLValues;
 import com.lanou3g.testdemo.task.VolleySingleton;
 import com.squareup.picasso.Picasso;
@@ -96,8 +97,8 @@ public class TOPFragment extends BaseFragment {
                 }
 
 
-
-                Picasso.with(getContext()).load(dayBean.getData().getCover_image()).into(img);
+                NetTool tool = new NetTool();
+                tool.getImg(dayBean.getData().getCover_image(), img);
                 mAdapter = new DayAdapter(getContext());
                 mAdapter.setDayBeen(dayBeen);
                 GridLayoutManager manager = new GridLayoutManager(getContext(),2);
@@ -125,25 +126,6 @@ public class TOPFragment extends BaseFragment {
             }
         });
         VolleySingleton.getInstance().addRequest(stringRequest);
-
-
-
-//        mRecyclerView.setOnClickListener(new OnClickListener() {
-//            @Override
-//            public void onClick(View view) {
-//                SendBean bean = (SendBean) adapterView.getItemAtPosition(i);
-//                if (bean.getData().getItems().get(i).getUrl() != null) {
-//                    Intent intent = new Intent(context, HomeItemActivity.class);
-//                    intent.putExtra("url_kind", bean.getData().getItems().get(i).getUrl());
-//                    getActivity().startActivity(intent);
-//                } else {
-//                    Toast.makeText(context, "没有接口", Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
-
-
-
 
     }
 }

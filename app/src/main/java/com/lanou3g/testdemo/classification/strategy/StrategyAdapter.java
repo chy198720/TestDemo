@@ -12,6 +12,8 @@ import android.widget.TextView;
 
 import com.lanou3g.testdemo.R;
 import com.lanou3g.testdemo.task.LmClickListener;
+import com.lanou3g.testdemo.task.MyApp;
+import com.lanou3g.testdemo.task.NetTool;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -42,8 +44,7 @@ import java.util.ArrayList;
  * Created by 程洪运 on 16/9/23.
  */
 public class StrategyAdapter extends Adapter<StrategyAdapter.StrategyViewHolder>{
-    Context mContext;
-    ArrayList<StrategyBean> mStrategyBeen = new ArrayList<>();
+    StrategyBean mStrategyBeen;
 
     private LmClickListener clickListener;
 
@@ -51,47 +52,39 @@ public class StrategyAdapter extends Adapter<StrategyAdapter.StrategyViewHolder>
         this.clickListener = clickListener;
     }
 
-
-
-    public StrategyAdapter(Context context) {
-        mContext = context;
-    }
-
-    public void setStrategyBeen(ArrayList<StrategyBean> strategyBeen) {
+    public void setStrategyBeen(StrategyBean strategyBeen) {
         mStrategyBeen = strategyBeen;
     }
 
     @Override
     public StrategyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_strategy,parent,false);
+        View view = LayoutInflater.from(MyApp.getContext()).inflate(R.layout.item_strategy,parent,false);
         StrategyViewHolder viewHolder = new StrategyViewHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(StrategyViewHolder holder, final int position) {
-        final StrategyBean bean = mStrategyBeen.get(position);
 
-        Picasso.with(mContext)
-                .load(bean.getData().getColumns().get(position).getBanner_image_url())
-                .into(holder.mBanner_image_url);
-        holder.mTitle_strategy.setText(bean.getData().getColumns().get(position).getTitle());
-        holder.mSubtitle_strategy.setText(bean.getData().getColumns().get(position).getSubtitle());
-        holder.mAuthor_strategy.setText(bean.getData().getColumns().get(position).getAuthor());
+        NetTool tool = new NetTool();
+        tool.getImg(mStrategyBeen.getData().getColumns().get(position).getBanner_image_url(),holder.mBanner_image_url);
+        holder.mTitle_strategy.setText(mStrategyBeen.getData().getColumns().get(position).getTitle());
+        holder.mSubtitle_strategy.setText(mStrategyBeen.getData().getColumns().get(position).getSubtitle());
+        holder.mAuthor_strategy.setText(mStrategyBeen.getData().getColumns().get(position).getAuthor());
         holder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 clickListener.onClick
-                        (bean.getData().getColumns().get(position).getId()
-                                ,bean.getData().getColumns().get(position).getTitle());
+                        (mStrategyBeen.getData().getColumns().get(position).getId()
+                                ,mStrategyBeen.getData().getColumns().get(position).getTitle());
             }
         });
     }
 
     @Override
     public int getItemCount() {
-        return mStrategyBeen.size();
+        return mStrategyBeen.getData().getColumns().size();
     }
 
     public class StrategyViewHolder extends ViewHolder {

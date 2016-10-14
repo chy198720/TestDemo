@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lanou3g.testdemo.R;
+import com.lanou3g.testdemo.task.MyApp;
+import com.lanou3g.testdemo.task.NetTool;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -36,12 +38,11 @@ import java.util.List;
  * 　　　　　　　　　┗┓┓┏━┳┓┏┛ + + + +
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
- * <p>
+ * <p/>
  * Created by 程洪运 on 16/10/12.
  */
 public class ExpandAdapter extends BaseExpandableListAdapter {
 
-    Context mContext;
 
     List<String> groupList = new ArrayList<>();
     List<List<String>> childList = new ArrayList<>();
@@ -51,9 +52,6 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
         this.child_item = child_item;
     }
 
-    public ExpandAdapter(Context context) {
-        mContext = context;
-    }
 
     public void setChildList(List<List<String>> childList) {
         this.childList = childList;
@@ -102,7 +100,7 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
     public View getGroupView(int GroupI, boolean b, View view, ViewGroup viewGroup) {
         GroupHolder groupHolder = null;
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.expand_group, null);
+            view = LayoutInflater.from(MyApp.getContext()).inflate(R.layout.expand_group, null);
             groupHolder = new GroupHolder();
             groupHolder.mGroup_name = (TextView) view.findViewById(R.id.group_name);
             view.setTag(groupHolder);
@@ -118,7 +116,7 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
     public View getChildView(int GroupI, int childI, boolean b, View view, ViewGroup viewGroup) {
         ItemHolder itemHolder = null;
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.expand_group_item, null);
+            view = LayoutInflater.from(MyApp.getContext()).inflate(R.layout.expand_group_item, null);
             itemHolder = new ItemHolder();
             itemHolder.img = (ImageView) view.findViewById(R.id.img);
             itemHolder.imgRider = (ImageView) view.findViewById(R.id.img_raider);
@@ -127,18 +125,19 @@ public class ExpandAdapter extends BaseExpandableListAdapter {
             itemHolder = (ItemHolder) view.getTag();
         }
         childI = childI + childI;
+        NetTool tool = new NetTool();
 
         if (GroupI == 0) {
-            Picasso.with(mContext).load(child_item.get(GroupI).get(childI)).into(itemHolder.img);
-            Picasso.with(mContext).load(child_item.get(GroupI).get(childI + 1)).into(itemHolder.imgRider);
+            tool.getImg(child_item.get(GroupI).get(childI), itemHolder.img);
+            tool.getImg(child_item.get(GroupI).get(childI + 1), itemHolder.imgRider);
         } else if (GroupI == 1) {
             childI = childI + 6;
-            Picasso.with(mContext).load(child_item.get(GroupI).get(childI)).into(itemHolder.img);
-            Picasso.with(mContext).load(child_item.get(GroupI).get(childI + 1)).into(itemHolder.imgRider);
+            tool.getImg(child_item.get(GroupI).get(childI), itemHolder.img);
+            tool.getImg(child_item.get(GroupI).get(childI + 1), itemHolder.imgRider);
         } else {
             childI = childI + 12;
-            Picasso.with(mContext).load(child_item.get(GroupI).get(childI)).into(itemHolder.img);
-            Picasso.with(mContext).load(child_item.get(GroupI).get(childI + 1)).into(itemHolder.imgRider);
+            tool.getImg(child_item.get(GroupI).get(childI), itemHolder.img);
+            tool.getImg(child_item.get(GroupI).get(childI + 1), itemHolder.imgRider);
         }
 
         return view;

@@ -43,11 +43,11 @@ import com.lanou3g.testdemo.task.URLValues;
  * <p>
  * Created by 程洪运 on 16/10/14.
  */
-public class LmSkipActivity extends BaseActivity implements OnClickListener, OnScrollListener {
-    private PullToZoomListView lv;
-    private TextView tvTitle; //  渐变的标题
-    private RelativeLayout rlTitle; // 渐变的标题栏背景
-    private ImageView ivReturn;
+public class StrategyItemActivity extends BaseActivity implements OnClickListener, OnScrollListener {
+    private PullToZoomListView mZoomListView;
+    private TextView mTvTitle; //  渐变的标题
+    private RelativeLayout mRlTitle; // 渐变的标题栏背景
+    private ImageView mIvReturn;
     private String title;
 
     @Override
@@ -57,12 +57,12 @@ public class LmSkipActivity extends BaseActivity implements OnClickListener, OnS
 
     @Override
     protected void initView() {
-        lv = bindView(R.id.lv_selection);
-        tvTitle = bindView(R.id.tv_item_selection_title);
-        ivReturn = bindView(R.id.iv_selection_return);
-        rlTitle = bindView(R.id.rl_selection_title);
-        ivReturn.setOnClickListener(this);
-        lv.setOnScrollListener(this);
+        mZoomListView = bindView(R.id.lv_selection);
+        mTvTitle = bindView(R.id.tv_item_selection_title);
+        mIvReturn = bindView(R.id.iv_selection_return);
+        mRlTitle = bindView(R.id.rl_selection_title);
+        mIvReturn.setOnClickListener(this);
+        mZoomListView.setOnScrollListener(this);
 
 
     }
@@ -72,18 +72,18 @@ public class LmSkipActivity extends BaseActivity implements OnClickListener, OnS
         Intent intent = getIntent();
         title = intent.getStringExtra("title");
         int id = intent.getIntExtra("id", 0);
-        tool().getData(URLValues.LM_SKIP + id + URLValues.LM_SKIP1, LmSkipEntity.class, new NetTool.NetInterface<LmSkipEntity>() {
+        tool().getData(URLValues.LM_SKIP + id + URLValues.LM_SKIP1, StrategyItemBean.class, new NetTool.NetInterface<StrategyItemBean>() {
             @Override
-            public void onSuccess(LmSkipEntity lmSkipEntity) {
+            public void onSuccess(StrategyItemBean lmSkipEntity) {
                 View view = LayoutInflater.from(MyApp.getContext()).inflate(R.layout.item_lm_head, null);
                 TextView tvDescription = (TextView) view.findViewById(R.id.tv_lm_description);
                 tvDescription.setText(lmSkipEntity.getData().getDescription());
-                LmTwoLvAdapter adapter = new LmTwoLvAdapter();
+                StrategyItemListAdapter adapter = new StrategyItemListAdapter();
                 adapter.setLmSkipEntity(lmSkipEntity);
-                lv.setAdapter(adapter);
-                lv.addHeaderView(view);
-                tool().getImg(lmSkipEntity.getData().getCover_image_url(), lv.getHeaderView());
-                lv.getHeaderView().setScaleType(ImageView.ScaleType.CENTER_CROP);
+                mZoomListView.setAdapter(adapter);
+                mZoomListView.addHeaderView(view);
+                tool().getImg(lmSkipEntity.getData().getCover_image_url(), mZoomListView.getHeaderView());
+                mZoomListView.getHeaderView().setScaleType(ImageView.ScaleType.CENTER_CROP);
             }
 
             @Override
@@ -111,24 +111,24 @@ public class LmSkipActivity extends BaseActivity implements OnClickListener, OnS
         if (view.getChildAt(0) != null) {
             getScroll();
             if (getScroll() <= 0) {
-                tvTitle.setText(null);
-                rlTitle.setBackgroundColor(Color.argb(0, 244, 62, 94));//AGB由相关工具获得，或者美工提供
+                mTvTitle.setText(null);
+                mRlTitle.setBackgroundColor(Color.argb(0, 244, 62, 94));//AGB由相关工具获得，或者美工提供
             } else if (getScroll() > 0 && getScroll() <= 200) {
                 float scale = (float) getScroll() / 200;
                 float alpha = (255 * scale);
-                rlTitle.setBackgroundColor(Color.argb((int) alpha, 244, 62, 94));
+                mRlTitle.setBackgroundColor(Color.argb((int) alpha, 244, 62, 94));
             } else {
-                rlTitle.setBackgroundColor(Color.argb(255, 244, 62, 94));
+                mRlTitle.setBackgroundColor(Color.argb(255, 244, 62, 94));
                 float scale = (float) getScroll() / 200;
                 float alpha = (255 * scale);
 
                 if (getScroll() > 200 && getScroll() <= 400) {
-                    tvTitle.setText(title);
-                    tvTitle.setTextColor(Color.argb((int) alpha, 255, 255, 255));
+                    mTvTitle.setText(title);
+                    mTvTitle.setTextColor(Color.argb((int) alpha, 255, 255, 255));
                 }
                 if (getScroll() > 400) {
-                    tvTitle.setText(title);
-                    tvTitle.setTextColor(Color.argb(255, 255, 255, 255));
+                    mTvTitle.setText(title);
+                    mTvTitle.setTextColor(Color.argb(255, 255, 255, 255));
                 }
 
             }
@@ -136,13 +136,13 @@ public class LmSkipActivity extends BaseActivity implements OnClickListener, OnS
     }
 
     public int getScroll() {
-        View view = lv.getChildAt(0);
+        View view = mZoomListView.getChildAt(0);
         if (view == null) {
             return 0;
         }
-        int firstVisiblePosition = lv.getFirstVisiblePosition();
+        int firstVisiblePosition = mZoomListView.getFirstVisiblePosition();
         int top = view.getTop();
-        return -top + firstVisiblePosition * lv.getHeaderView().getHeight();
+        return -top + firstVisiblePosition * mZoomListView.getHeaderView().getHeight();
     }
 }
 

@@ -27,7 +27,7 @@ import java.util.List;
  * <p>
  * Created by 程洪运 on 16/10/14.
  */
-public class LmSkipEntity {
+public class StrategyItemBean {
     private int code;
     private DataBean data;
     private String message;

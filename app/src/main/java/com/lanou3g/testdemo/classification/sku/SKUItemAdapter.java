@@ -13,6 +13,8 @@ import android.widget.ListAdapter;
 import android.widget.TextView;
 
 import com.lanou3g.testdemo.R;
+import com.lanou3g.testdemo.task.LmClickListener;
+import com.lanou3g.testdemo.task.MyApp;
 
 import java.util.ArrayList;
 
@@ -42,13 +44,15 @@ import java.util.ArrayList;
  * Created by 程洪运 on 16/9/29.
  */
 public class SKUItemAdapter extends BaseAdapter{
-    Context mContext;
     private RecycleAdapter mRecycleAdapter;
     private SKUItemBean mSKUItemBean;
 
-    public SKUItemAdapter(Context context) {
-        mContext = context;
+    private LmClickListener lmClickListener;
+
+    public void setLmClickListener(LmClickListener lmClickListener) {
+        this.lmClickListener = lmClickListener;
     }
+
 
 
     public void setSKUItemBean(SKUItemBean SKUItemBean) {
@@ -74,7 +78,7 @@ public class SKUItemAdapter extends BaseAdapter{
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder = null;
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_sku_two,null);
+            view = LayoutInflater.from(MyApp.getContext()).inflate(R.layout.item_sku_two,null);
             viewHolder = new ViewHolder(view);
             view.setTag(viewHolder);
         }else {
@@ -83,11 +87,29 @@ public class SKUItemAdapter extends BaseAdapter{
 
 
 
-        mRecycleAdapter = new RecycleAdapter(mContext,mSKUItemBean,i);
-        GridLayoutManager manager = new GridLayoutManager(mContext, 3);
+        mRecycleAdapter = new RecycleAdapter(mSKUItemBean,i);
+        GridLayoutManager manager = new GridLayoutManager(MyApp.getContext(), 3);
         viewHolder.mRecycle.setLayoutManager(manager);
+        mRecycleAdapter.setLmClickListener(new LmClickListener() {
+            @Override
+            public void onClick(int id, String title) {
+                lmClickListener.onClick(id, title);
+            }
+        });
         viewHolder.mRecycle.setAdapter(mRecycleAdapter);
         viewHolder.mTextName.setText(mSKUItemBean.getData().getCategories().get(i).getName());
+
+
+
+        if (i == 0) {
+            viewHolder.mTextName.setVisibility(View.GONE);
+            viewHolder.mViewL.setVisibility(View.GONE);
+            viewHolder.mViewR.setVisibility(View.GONE);
+        } else {
+            viewHolder.mTextName.setVisibility(View.VISIBLE);
+            viewHolder.mViewL.setVisibility(View.VISIBLE);
+            viewHolder.mViewR.setVisibility(View.VISIBLE);
+        }
 
         return view;
     }
@@ -97,11 +119,15 @@ public class SKUItemAdapter extends BaseAdapter{
 
         private final RecyclerView mRecycle;
         private final TextView mTextName;
+        private final View mViewL;
+        private final View mViewR;
 
         public ViewHolder(View view){
 
             mTextName = (TextView) view.findViewById(R.id.text_name);
             mRecycle = (RecyclerView) view.findViewById(R.id.sku_recycle);
+            mViewL = view.findViewById(R.id.view_left);
+            mViewR = view.findViewById(R.id.view_right);
 
         }
     }

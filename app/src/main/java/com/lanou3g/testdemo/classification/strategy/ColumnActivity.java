@@ -9,6 +9,8 @@ import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
 import com.lanou3g.testdemo.R;
 import com.lanou3g.testdemo.task.BaseActivity;
+import com.lanou3g.testdemo.task.NetTool;
+import com.lanou3g.testdemo.task.NetTool.NetInterface;
 import com.lanou3g.testdemo.task.URLValues;
 import com.lanou3g.testdemo.task.VolleySingleton;
 
@@ -39,7 +41,7 @@ import com.lanou3g.testdemo.task.VolleySingleton;
  */
 public class ColumnActivity extends BaseActivity {
     private ListView mListView;
-    private ColumnAdapter mAdapter;
+    NetTool tool = new NetTool();
 
     @Override
     protected int setLayout() {
@@ -55,26 +57,19 @@ public class ColumnActivity extends BaseActivity {
     @Override
     protected void initView() {
 
-        mAdapter = new ColumnAdapter(this);
-
-
-        StringRequest stringRequest = new StringRequest(URLValues.CLASS_STRATEGY_PART, new Listener<String>() {
+        tool.getData(URLValues.CLASS_STRATEGY_PART, StrategyBean.class, new NetInterface<StrategyBean>() {
             @Override
-            public void onResponse(String response) {
-                Gson gson = new Gson();
-                StrategyBean strategyBean = gson.fromJson(response, StrategyBean.class);
-                mAdapter.setStrategyBean(strategyBean);
-                mListView.setAdapter(mAdapter);
-
+            public void onSuccess(StrategyBean strategyBean) {
+                ColumnAdapter adapter = new ColumnAdapter();
+                adapter.setStrategyBean(strategyBean);
+                mListView.setAdapter(adapter);
             }
-        }, new ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onError(String errorMsg) {
 
             }
         });
-
-        VolleySingleton.getInstance().addRequest(stringRequest);
 
     }
 }

@@ -9,6 +9,8 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lanou3g.testdemo.R;
+import com.lanou3g.testdemo.task.MyApp;
+import com.lanou3g.testdemo.task.NetTool;
 import com.squareup.picasso.Picasso;
 
 /**
@@ -38,12 +40,6 @@ import com.squareup.picasso.Picasso;
  */
 public class ColumnAdapter extends BaseAdapter{
 
-    Context mContext;
-
-    public ColumnAdapter(Context context) {
-        mContext = context;
-    }
-
     StrategyBean mStrategyBean;
 
     public void setStrategyBean(StrategyBean strategyBean) {
@@ -69,19 +65,20 @@ public class ColumnAdapter extends BaseAdapter{
     public View getView(int i, View view, ViewGroup viewGroup) {
         ColumnHolder columnHolder = null;
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_column,null);
+            view = LayoutInflater.from(MyApp.getContext()).inflate(R.layout.item_column,null);
             columnHolder = new ColumnHolder(view);
             view.setTag(columnHolder);
         }else {
             columnHolder = (ColumnHolder) view.getTag();
         }
 
-        Picasso.with(mContext).load
-                (mStrategyBean.getData().getColumns().get(i).getBanner_image_url())
-                .into(columnHolder.mImg_column);
-
-        columnHolder.mText_column.setText(mStrategyBean.getData().getColumns().get(i).getTitle());
-        columnHolder.mText_view_column.setText(mStrategyBean.getData().getColumns().get(i).getAuthor());
+        NetTool tool = new NetTool();
+        tool.getImg(mStrategyBean.getData().getColumns().get(i)
+                .getBanner_image_url(),columnHolder.mImg_column);
+        columnHolder.mText_column.setText(mStrategyBean.getData()
+                .getColumns().get(i).getTitle());
+        columnHolder.mText_view_column.setText(mStrategyBean.getData()
+                .getColumns().get(i).getAuthor());
 
 
         return view;

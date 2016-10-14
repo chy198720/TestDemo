@@ -22,6 +22,7 @@ import com.lanou3g.testdemo.select.ItemActivity;
 import com.lanou3g.testdemo.select.SelectFragment;
 import com.lanou3g.testdemo.select.day.DayAdapter.OnItemClickListener;
 import com.lanou3g.testdemo.task.BaseFragment;
+import com.lanou3g.testdemo.task.NetTool;
 import com.lanou3g.testdemo.task.URLValues;
 import com.lanou3g.testdemo.task.VolleySingleton;
 import com.squareup.picasso.Picasso;
@@ -78,9 +79,6 @@ public class DayFragment extends BaseFragment {
     protected void initData() {
 
 
-//        final View view = LayoutInflater.from(getContext()).inflate(R.layout.day,null);
-//        final ImageView img = (ImageView) view.findViewById(R.id.img);
-
         final ArrayList<DayBean> dayBeen = new ArrayList<>();
 
         StringRequest stringRequest = new StringRequest(URLValues.SELECT_DAY, new Listener<String>() {
@@ -97,8 +95,8 @@ public class DayFragment extends BaseFragment {
                     dayBeen.add(dayBean);
                 }
 
-                Picasso.with(getContext()).load(dayBean.getData().getCover_image()).into(img);
-
+                NetTool tool = new NetTool();
+                tool.getImg(dayBean.getData().getCover_image(),img);
 
                 DayAdapter adapter = new DayAdapter(getContext());
                 adapter.setDayBeen(dayBeen);

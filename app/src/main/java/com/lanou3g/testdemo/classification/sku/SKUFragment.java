@@ -1,5 +1,6 @@
 package com.lanou3g.testdemo.classification.sku;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.util.Log;
 import android.view.View;
@@ -18,6 +19,10 @@ import com.google.gson.Gson;
 import com.lanou3g.testdemo.R;
 import com.lanou3g.testdemo.home.BoxBean;
 import com.lanou3g.testdemo.task.BaseFragment;
+import com.lanou3g.testdemo.task.LmClickListener;
+import com.lanou3g.testdemo.task.MyApp;
+import com.lanou3g.testdemo.task.NetTool;
+import com.lanou3g.testdemo.task.NetTool.NetInterface;
 import com.lanou3g.testdemo.task.URLValues;
 import com.lanou3g.testdemo.task.VolleySingleton;
 
@@ -45,7 +50,7 @@ import java.util.ArrayList;
  * 　　　　　　　　　┗┓┓┏━┳┓┏┛ + + + +
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
- * <p>
+ * <p/>
  * Created by 程洪运 on 16/9/23.
  */
 public class SKUFragment extends BaseFragment {
@@ -53,7 +58,6 @@ public class SKUFragment extends BaseFragment {
     private ListView mList_sku;
     private EditText mEditText;
     private ListView mList_View_SKU;
-
 
 
     @Override
@@ -72,65 +76,47 @@ public class SKUFragment extends BaseFragment {
 
     @Override
     protected void initData() {
-        final ArrayList<SKUItemBean> been = new ArrayList<>();
-        StringRequest stringRequest = new StringRequest(URLValues.CLASS_SKU_LIST, new Listener<String>() {
-            @Override
-            public void onResponse(String response) {
 
-                Gson gson = new Gson();
-                SKUItemBean bean = gson.fromJson(response, SKUItemBean.class);
-                for (int i = 0; i < bean.getData().getCategories().size(); i++) {
-                    bean.getData().getCategories().get(i).getName();
-                    for (int j = 0; j < bean.getData().getCategories().get(i).getSubcategories().size(); j++) {
-                        bean.getData().getCategories().get(i).getSubcategories().get(j).getIcon_url();
-                        bean.getData().getCategories().get(i).getSubcategories().get(j).getName();
+        NetTool tool = new NetTool();
+        tool.getData(URLValues.CLASS_SKU_LIST, SKUItemBean.class, new NetInterface<SKUItemBean>() {
+            @Override
+            public void onSuccess(SKUItemBean skuItemBean) {
+                SKUAdapter skuAdapter = new SKUAdapter();
+                skuAdapter.setSKUBeen(skuItemBean);
+                mList_sku.setAdapter(skuAdapter);
+                SKUItemAdapter skuItemAdapter = new SKUItemAdapter();
+                skuItemAdapter.setSKUItemBean(skuItemBean);
+                skuItemAdapter.setLmClickListener(new LmClickListener() {
+                    @Override
+                    public void onClick(int id, String title) {
+                        Intent intent = new Intent(MyApp.getContext(), SKURecycleActivity.class);
+                        intent.putExtra("url", "" + id);
+                        intent.putExtra("title", title);
+                        startActivity(intent);
                     }
-                    been.add(bean);
-                }
-                Log.d("SKUFragment", "been:" + been);
-                SKUAdapter adapter = new SKUAdapter(getContext());
-                adapter.setSKUBeen(been);
-                mList_sku.setAdapter(adapter);
-
-                SKUItemAdapter itemAdapter = new SKUItemAdapter(getContext());
-                itemAdapter.setSKUItemBean(bean);
-                mList_View_SKU.setAdapter(itemAdapter);
-
-
-
+                });
+                mList_View_SKU.setAdapter(skuItemAdapter);
             }
-        }, new ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onError(String errorMsg) {
 
             }
         });
-        VolleySingleton.getInstance().addRequest(stringRequest);
 
 
-
-
-
-        StringRequest mStringRequests = new StringRequest(URLValues.EDITTEXT, new Listener<String>() {
+        tool.getData(URLValues.EDITTEXT, BoxBean.class, new NetInterface<BoxBean>() {
             @Override
-            public void onResponse(String response) {
-                Gson mGson = new Gson();
-                BoxBean boxBean = mGson.fromJson(response, BoxBean.class);
+            public void onSuccess(BoxBean boxBean) {
                 mEditText.setHint(boxBean.getData().getPlaceholder());
                 mEditText.setTextSize(10);
             }
-        }, new ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onError(String errorMsg) {
 
             }
         });
-
-        VolleySingleton.getInstance().addRequest(mStringRequests);
-
-
-
-
 
         mList_sku.setOnItemClickListener(new OnItemClickListener() {
             @Override
@@ -141,6 +127,7 @@ public class SKUFragment extends BaseFragment {
 
         mList_View_SKU.setOnScrollListener(new OnScrollListener() {
             boolean userScrolled = false;
+
             @Override
             public void onScrollStateChanged(AbsListView absListView, int i) {
                 if (i == SCROLL_STATE_IDLE) {
@@ -156,12 +143,9 @@ public class SKUFragment extends BaseFragment {
                 if (userScrolled) {
 
                     mList_sku.setSelection(i / 1);
-//                    mList_sku.setBackgroundColor(Color.YELLOW);
-//                    mList_sku.setDrawingCacheBackgroundColor(Color.YELLOW);
                 }
             }
         });
-
 
 
     }

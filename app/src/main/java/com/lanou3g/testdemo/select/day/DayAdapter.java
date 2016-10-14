@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lanou3g.testdemo.R;
+import com.lanou3g.testdemo.task.NetTool;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ import java.util.ArrayList;
  * 　　　　　　　　　┗┓┓┏━┳┓┏┛ + + + +
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
- * <p>
+ * <p/>
  * Created by 程洪运 on 16/9/23.
  */
 public class DayAdapter extends Adapter<DayAdapter.DayViewHolder> {
@@ -69,16 +70,14 @@ public class DayAdapter extends Adapter<DayAdapter.DayViewHolder> {
     public DayViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         View view = LayoutInflater.from(mContext).inflate(R.layout.item_day, null);
         DayViewHolder viewHolder = new DayViewHolder(view);
-//        view.setOnClickListener(this);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(final DayViewHolder holder, int position) {
         DayBean dayBean = mDayBeen.get(position);
-        Picasso.with(mContext).
-                load(dayBean.getData().getItems().get(position).getCover_image_url())
-                .into(holder.mCover_image_url);
+        NetTool tool = new NetTool();
+        tool.getImg(dayBean.getData().getItems().get(position).getCover_image_url(), holder.mCover_image_url);
         holder.mShort_description.setText(dayBean.getData().getItems().get(position).getShort_description());
         holder.mName.setHint(dayBean.getData().getItems().get(position).getName());
         holder.mPrice.setText("¥" + dayBean.getData().getItems().get(position).getPrice());

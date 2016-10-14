@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.lanou3g.testdemo.R;
+import com.lanou3g.testdemo.task.MyApp;
 
 import java.util.ArrayList;
 
@@ -37,27 +38,20 @@ import java.util.ArrayList;
  * Created by 程洪运 on 16/9/28.
  */
 public class SKUAdapter extends BaseAdapter{
+    SKUItemBean mSKUBeen;
 
-    Context mContext;
-
-    public SKUAdapter(Context context) {
-        mContext = context;
-    }
-
-    ArrayList<SKUItemBean> mSKUBeen = new ArrayList<>();
-
-    public void setSKUBeen(ArrayList<SKUItemBean> SKUBeen) {
+    public void setSKUBeen(SKUItemBean SKUBeen) {
         mSKUBeen = SKUBeen;
     }
 
     @Override
     public int getCount() {
-        return mSKUBeen.size();
+        return mSKUBeen.getData().getCategories().size();
     }
 
     @Override
     public Object getItem(int i) {
-        return mSKUBeen.get(i);
+        return mSKUBeen.getData().getCategories().get(i);
     }
 
     @Override
@@ -69,14 +63,14 @@ public class SKUAdapter extends BaseAdapter{
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder = null;
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_sku,null);
+            view = LayoutInflater.from(MyApp.getContext()).inflate(R.layout.item_sku,null);
             viewHolder = new ViewHolder(view);
             view.setTag(viewHolder);
         }else {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        viewHolder.mTextView.setText(mSKUBeen.get(i).getData().getCategories().get(i).getName());
+        viewHolder.mTextView.setText(mSKUBeen.getData().getCategories().get(i).getName());
 
         return view;
     }

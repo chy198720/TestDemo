@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="205dp"
+    android:layout_height="260dp"
+    android:layout_margin="5dp"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_hot_id"
+        android:layout_width="205dp"
+        android:layout_height="260dp"
+        android:background="#ffffff">
+
+        <ImageView
+            android:id="@+id/iv_hot_cover_image_url"
+            android:layout_width="match_parent"
+            android:layout_height="180dp"
+            android:scaleType="centerCrop"/>
+
+        <TextView
+            android:id="@+id/tv_hot_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/iv_hot_cover_image_url"
+            android:layout_margin="10dp"
+            android:textColor="#636363"/>
+
+        <TextView
+            android:id="@+id/tv_hot_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginLeft="10dp"
+            android:textColor="#ff5555"/>
+
+        <TextView
+            android:id="@+id/tv_hot_count"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentRight="true"
+            android:layout_marginBottom="5dp"
+            android:layout_marginRight="20dp"
+            android:textColor="#706c6c"
+            android:textSize="13sp"/>
+
+        <ImageView
+            android:id="@+id/iv_hot_favorites"
+            android:layout_width="12dp"
+            android:layout_height="18dp"
+            android:layout_alignTop="@id/tv_hot_count"
+            android:layout_marginRight="5dp"
+            android:layout_toLeftOf="@id/tv_hot_count"
+            android:src="@mipmap/ic_small_heart_normal"/>
+
+    </RelativeLayout>
+
+
+</LinearLayout>

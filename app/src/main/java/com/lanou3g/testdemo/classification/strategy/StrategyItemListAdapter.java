@@ -36,15 +36,15 @@ import com.lanou3g.testdemo.task.NetTool;
  * <p>
  * Created by 程洪运 on 16/10/14.
  */
-public class LmTwoLvAdapter extends BaseAdapter {
-    private LmSkipEntity lmSkipEntity;
+public class StrategyItemListAdapter extends BaseAdapter {
+    private StrategyItemBean lmSkipEntity;
     private int index;
 
     public void setIndex(int index) {
         this.index = index;
     }
 
-    public void setLmSkipEntity(LmSkipEntity lmSkipEntity) {
+    public void setLmSkipEntity(StrategyItemBean lmSkipEntity) {
         this.lmSkipEntity = lmSkipEntity;
         notifyDataSetChanged();
     }

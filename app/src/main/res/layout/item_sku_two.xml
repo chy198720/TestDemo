@@ -3,13 +3,50 @@
               android:orientation="vertical"
               android:layout_width="match_parent"
               android:background="#fff"
+              android:gravity="center"
               android:layout_height="wrap_content">
 
-    <TextView
-        android:id="@+id/text_name"
-        android:gravity="center"
+
+
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
+        android:layout_marginTop="20dp"
+        android:layout_height="wrap_content">
+
+
+        <TextView
+            android:id="@+id/text_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginBottom="30dp"
+            android:layout_marginTop="10dp"
+            android:textColor="#b4aeae" />
+
+        <View
+            android:id="@+id/view_left"
+            android:layout_width="100dp"
+            android:layout_height="0.2dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/text_name"
+            android:background="#b4aeae" />
+
+        <View
+            android:id="@+id/view_right"
+            android:layout_width="100dp"
+            android:layout_height="0.2dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/text_name"
+            android:background="#b4aeae" />
+
+
+    </RelativeLayout>
+
+
 
     <android.support.v7.widget.RecyclerView
         android:id="@+id/sku_recycle"

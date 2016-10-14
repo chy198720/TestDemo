@@ -3,7 +3,6 @@ package com.lanou3g.testdemo.classification.strategy;
 import android.content.Intent;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.RecyclerView.AdapterDataObserver;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.View.OnClickListener;
@@ -22,9 +21,12 @@ import com.lanou3g.testdemo.home.EtActivity;
 import com.lanou3g.testdemo.task.BaseFragment;
 import com.lanou3g.testdemo.task.LmClickListener;
 import com.lanou3g.testdemo.task.MyApp;
+import com.lanou3g.testdemo.task.NetTool;
+import com.lanou3g.testdemo.task.NetTool.NetInterface;
 import com.lanou3g.testdemo.task.URLValues;
 import com.lanou3g.testdemo.task.VolleySingleton;
 
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -61,6 +63,7 @@ public class StrategyFragment extends BaseFragment implements OnClickListener {
     private List<List<String>> mChildList;
     private List<List<String>> mChild_item;
     private TextView mText_sku;
+    NetTool mTool = new NetTool();
 
     @Override
     protected int setLayout() {
@@ -84,22 +87,11 @@ public class StrategyFragment extends BaseFragment implements OnClickListener {
     @Override
     protected void initData() {
 
-        // _____________________解析分类_攻略_栏目数据
-        final ArrayList<StrategyBean> strategyBeen = new ArrayList<>();
-        StringRequest stringRequest = new StringRequest(URLValues.CLASS_STRATEGY_PART, new Listener<String>() {
+        mTool.getData(URLValues.CLASS_STRATEGY_PART, StrategyBean.class, new NetInterface<StrategyBean>() {
             @Override
-            public void onResponse(String response) {
-                Gson gson = new Gson();
-                StrategyBean bean = gson.fromJson(response, StrategyBean.class);
-                for (int i = 0; i < 11; i++) {
-                    bean.getData().getColumns().get(i).getBanner_image_url();
-                    bean.getData().getColumns().get(i).getTitle();
-                    bean.getData().getColumns().get(i).getSubtitle();
-                    bean.getData().getColumns().get(i).getAuthor();
-                    strategyBeen.add(bean);
-                }
-                StrategyAdapter adapter = new StrategyAdapter(getContext());
-                adapter.setStrategyBeen(strategyBeen);
+            public void onSuccess(StrategyBean strategyBean) {
+                StrategyAdapter adapter = new StrategyAdapter();
+                adapter.setStrategyBeen(strategyBean);
                 GridLayoutManager manager = new GridLayoutManager(getContext(), 3);
                 manager.setOrientation(GridLayoutManager.HORIZONTAL);
                 mRecyclerView.setLayoutManager(manager);
@@ -107,66 +99,59 @@ public class StrategyFragment extends BaseFragment implements OnClickListener {
                 adapter.setClickListener(new LmClickListener() {
                     @Override
                     public void onClick(int id, String title) {
-                        Intent intent = new Intent(MyApp.getContext(), LmSkipActivity.class);
+                        Intent intent = new Intent(MyApp.getContext(), StrategyItemActivity.class);
                         intent.putExtra("id", id);
                         intent.putExtra("title", title);
                         startActivity(intent);
                     }
                 });
-
             }
-        }, new ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onError(String errorMsg) {
 
             }
         });
-
-        VolleySingleton.getInstance().addRequest(stringRequest);
 
 
         // __________________________解析分类_攻略_EditText
-        StringRequest mStringRequests = new StringRequest(URLValues.EDITTEXT, new Listener<String>() {
+
+        mTool.getData(URLValues.EDITTEXT, BoxBean.class, new NetInterface<BoxBean>() {
             @Override
-            public void onResponse(String response) {
-                Gson mGson = new Gson();
-                BoxBean boxBean = mGson.fromJson(response, BoxBean.class);
+            public void onSuccess(BoxBean boxBean) {
                 mEditText.setHint(boxBean.getData().getPlaceholder());
                 mEditText.setTextSize(10);
             }
-        }, new ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onError(String errorMsg) {
 
             }
         });
-
-        VolleySingleton.getInstance().addRequest(mStringRequests);
 
 
         //____________________解析分类_攻略_品类.风格.对象
 
-        StringRequest request = new StringRequest(URLValues.CLASS_STRATEGY_CATEGORY, new Listener<String>() {
+
+        mTool.getData(URLValues.CLASS_STRATEGY_CATEGORY, ExpandBean.class, new NetInterface<ExpandBean>() {
             @Override
-            public void onResponse(String response) {
-                Gson gson = new Gson();
-                ExpandBean bean = gson.fromJson(response, ExpandBean.class);
+            public void onSuccess(ExpandBean expandBean) {
                 mGroupList = new ArrayList<String>();
                 mChildList = new ArrayList<List<String>>();
-                for (int i = 0; i < bean.getData().getChannel_groups().size(); i++) {
-                    mGroupList.add(bean.getData().getChannel_groups().get(i).getName());
+                for (int i = 0; i < expandBean.getData().getChannel_groups().size(); i++) {
+                    mGroupList.add(expandBean.getData().getChannel_groups().get(i).getName());
                     mChildList.add(mGroupList);
                 }
                 mChild_item = new ArrayList<List<String>>();
                 List<String> item = new ArrayList<>();
                 for (int i = 0; i < 3; i++) {
                     for (int j = 0; j < 6; j++) {
-                        item.add(bean.getData().getChannel_groups().get(i).getChannels().get(j).getCover_image_url());
+                        item.add(expandBean.getData().getChannel_groups().get(i).getChannels().get(j).getCover_image_url());
                         mChild_item.add(item);
                     }
 
                 }
-                ExpandAdapter adapter = new ExpandAdapter(getContext());
+                ExpandAdapter adapter = new ExpandAdapter();
                 adapter.setGroupList(mGroupList);
                 adapter.setChildList(mChildList);
                 adapter.setChild_item(mChild_item);
@@ -177,16 +162,11 @@ public class StrategyFragment extends BaseFragment implements OnClickListener {
 
             }
 
-
-        }, new ErrorListener() {
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onError(String errorMsg) {
 
             }
         });
-        VolleySingleton.getInstance().addRequest(request);
-
-
     }
 
     @Override
