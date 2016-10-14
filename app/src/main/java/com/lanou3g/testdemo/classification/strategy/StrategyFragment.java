@@ -20,6 +20,8 @@ import com.lanou3g.testdemo.R;
 import com.lanou3g.testdemo.home.BoxBean;
 import com.lanou3g.testdemo.home.EtActivity;
 import com.lanou3g.testdemo.task.BaseFragment;
+import com.lanou3g.testdemo.task.LmClickListener;
+import com.lanou3g.testdemo.task.MyApp;
 import com.lanou3g.testdemo.task.URLValues;
 import com.lanou3g.testdemo.task.VolleySingleton;
 
@@ -102,6 +104,15 @@ public class StrategyFragment extends BaseFragment implements OnClickListener {
                 manager.setOrientation(GridLayoutManager.HORIZONTAL);
                 mRecyclerView.setLayoutManager(manager);
                 mRecyclerView.setAdapter(adapter);
+                adapter.setClickListener(new LmClickListener() {
+                    @Override
+                    public void onClick(int id, String title) {
+                        Intent intent = new Intent(MyApp.getContext(), LmSkipActivity.class);
+                        intent.putExtra("id", id);
+                        intent.putExtra("title", title);
+                        startActivity(intent);
+                    }
+                });
 
             }
         }, new ErrorListener() {

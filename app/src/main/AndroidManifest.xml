@@ -36,6 +36,7 @@
         <activity android:name=".my.LoginActivity"/>
         <activity android:name=".classification.strategy.ColumnActivity"/>
         <activity android:name=".select.ItemActivity"/>
+        <activity android:name=".classification.strategy.LmSkipActivity"/>
 
         <activity
             android:name="com.mob.tools.MobUIShell"

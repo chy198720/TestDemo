@@ -1,0 +1,148 @@
+package com.lanou3g.testdemo.classification.strategy;
+
+import android.content.Intent;
+import android.graphics.Color;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.AbsListView;
+import android.widget.AbsListView.OnScrollListener;
+import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.lanou3g.testdemo.R;
+import com.lanou3g.testdemo.task.BaseActivity;
+import com.lanou3g.testdemo.task.MyApp;
+import com.lanou3g.testdemo.task.NetTool;
+import com.lanou3g.testdemo.task.PullToZoomListView;
+import com.lanou3g.testdemo.task.URLValues;
+
+/**
+ * 　　　　　　　　┏┓　　　┏┓+ +
+ * 　　　　　　　┏┛┻━━━┛┻┓ + +
+ * 　　　　　　　┃　　　　　　　┃
+ * 　　　　　　　┃　　　━　　　┃ ++ + + +
+ * 　　　　　　 ████━████ ┃+
+ * 　　　　　　　┃　　　　　　　┃ +
+ * 　　　　　　　┃　　　┻　　　┃
+ * 　　　　　　　┃　　　　　　　┃ + +
+ * 　　　　　　　┗━┓　　　┏━┛
+ * 　　　　　　　　　┃　　　┃
+ * 　　　　　　　　　┃　　　┃ + + + +
+ * 　　　　　　　　　┃　　　┃　　　　Code is far away from bug with the animal protecting
+ * 　　　　　　　　　┃　　　┃ + 　　　　神兽保佑,代码无bug
+ * 　　　　　　　　　┃　　　┃
+ * 　　　　　　　　　┃　　　┃　　+
+ * 　　　　　　　　　┃　 　　┗━━━┓ + +
+ * 　　　　　　　　　┃ 　　　　　　　┣┓
+ * 　　　　　　　　　┃ 　　　　　　　┏┛
+ * 　　　　　　　　　┗┓┓┏━┳┓┏┛ + + + +
+ * 　　　　　　　　　　┃┫┫　┃┫┫
+ * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
+ * <p>
+ * Created by 程洪运 on 16/10/14.
+ */
+public class LmSkipActivity extends BaseActivity implements OnClickListener, OnScrollListener {
+    private PullToZoomListView lv;
+    private TextView tvTitle; //  渐变的标题
+    private RelativeLayout rlTitle; // 渐变的标题栏背景
+    private ImageView ivReturn;
+    private String title;
+
+    @Override
+    protected int setLayout() {
+        return R.layout.fragment_selection;
+    }
+
+    @Override
+    protected void initView() {
+        lv = bindView(R.id.lv_selection);
+        tvTitle = bindView(R.id.tv_item_selection_title);
+        ivReturn = bindView(R.id.iv_selection_return);
+        rlTitle = bindView(R.id.rl_selection_title);
+        ivReturn.setOnClickListener(this);
+        lv.setOnScrollListener(this);
+
+
+    }
+
+    @Override
+    protected void initData() {
+        Intent intent = getIntent();
+        title = intent.getStringExtra("title");
+        int id = intent.getIntExtra("id", 0);
+        tool().getData(URLValues.LM_SKIP + id + URLValues.LM_SKIP1, LmSkipEntity.class, new NetTool.NetInterface<LmSkipEntity>() {
+            @Override
+            public void onSuccess(LmSkipEntity lmSkipEntity) {
+                View view = LayoutInflater.from(MyApp.getContext()).inflate(R.layout.item_lm_head, null);
+                TextView tvDescription = (TextView) view.findViewById(R.id.tv_lm_description);
+                tvDescription.setText(lmSkipEntity.getData().getDescription());
+                LmTwoLvAdapter adapter = new LmTwoLvAdapter();
+                adapter.setLmSkipEntity(lmSkipEntity);
+                lv.setAdapter(adapter);
+                lv.addHeaderView(view);
+                tool().getImg(lmSkipEntity.getData().getCover_image_url(), lv.getHeaderView());
+                lv.getHeaderView().setScaleType(ImageView.ScaleType.CENTER_CROP);
+            }
+
+            @Override
+            public void onError(String errorMsg) {
+
+            }
+        });
+    }
+
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.iv_selection_return:
+                finish();
+                break;
+        }
+    }
+
+    @Override
+    public void onScrollStateChanged(AbsListView view, int scrollState) {
+    }
+
+    @Override
+    public void onScroll(AbsListView view, int firstVisibleItem, int visibleItemCount, int totalItemCount) {
+        if (view.getChildAt(0) != null) {
+            getScroll();
+            if (getScroll() <= 0) {
+                tvTitle.setText(null);
+                rlTitle.setBackgroundColor(Color.argb(0, 244, 62, 94));//AGB由相关工具获得，或者美工提供
+            } else if (getScroll() > 0 && getScroll() <= 200) {
+                float scale = (float) getScroll() / 200;
+                float alpha = (255 * scale);
+                rlTitle.setBackgroundColor(Color.argb((int) alpha, 244, 62, 94));
+            } else {
+                rlTitle.setBackgroundColor(Color.argb(255, 244, 62, 94));
+                float scale = (float) getScroll() / 200;
+                float alpha = (255 * scale);
+
+                if (getScroll() > 200 && getScroll() <= 400) {
+                    tvTitle.setText(title);
+                    tvTitle.setTextColor(Color.argb((int) alpha, 255, 255, 255));
+                }
+                if (getScroll() > 400) {
+                    tvTitle.setText(title);
+                    tvTitle.setTextColor(Color.argb(255, 255, 255, 255));
+                }
+
+            }
+        }
+    }
+
+    public int getScroll() {
+        View view = lv.getChildAt(0);
+        if (view == null) {
+            return 0;
+        }
+        int firstVisiblePosition = lv.getFirstVisiblePosition();
+        int top = view.getTop();
+        return -top + firstVisiblePosition * lv.getHeaderView().getHeight();
+    }
+}
+

@@ -7,9 +7,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.lanou3g.testdemo.R;
+import com.lanou3g.testdemo.task.LmClickListener;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -43,6 +45,14 @@ public class StrategyAdapter extends Adapter<StrategyAdapter.StrategyViewHolder>
     Context mContext;
     ArrayList<StrategyBean> mStrategyBeen = new ArrayList<>();
 
+    private LmClickListener clickListener;
+
+    public void setClickListener(LmClickListener clickListener) {
+        this.clickListener = clickListener;
+    }
+
+
+
     public StrategyAdapter(Context context) {
         mContext = context;
     }
@@ -59,8 +69,8 @@ public class StrategyAdapter extends Adapter<StrategyAdapter.StrategyViewHolder>
     }
 
     @Override
-    public void onBindViewHolder(StrategyViewHolder holder, int position) {
-        StrategyBean bean = mStrategyBeen.get(position);
+    public void onBindViewHolder(StrategyViewHolder holder, final int position) {
+        final StrategyBean bean = mStrategyBeen.get(position);
 
         Picasso.with(mContext)
                 .load(bean.getData().getColumns().get(position).getBanner_image_url())
@@ -68,7 +78,15 @@ public class StrategyAdapter extends Adapter<StrategyAdapter.StrategyViewHolder>
         holder.mTitle_strategy.setText(bean.getData().getColumns().get(position).getTitle());
         holder.mSubtitle_strategy.setText(bean.getData().getColumns().get(position).getSubtitle());
         holder.mAuthor_strategy.setText(bean.getData().getColumns().get(position).getAuthor());
+        holder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
 
+                clickListener.onClick
+                        (bean.getData().getColumns().get(position).getId()
+                                ,bean.getData().getColumns().get(position).getTitle());
+            }
+        });
     }
 
     @Override
@@ -82,9 +100,11 @@ public class StrategyAdapter extends Adapter<StrategyAdapter.StrategyViewHolder>
         private final TextView mTitle_strategy;
         private final TextView mSubtitle_strategy;
         private final TextView mAuthor_strategy;
+        private final LinearLayout mLinearLayout;
 
         public StrategyViewHolder(View itemView) {
             super(itemView);
+            mLinearLayout = (LinearLayout) itemView.findViewById(R.id.ll_Strategy);
             mBanner_image_url = (ImageView) itemView.findViewById(R.id.banner_image_url_strategy);
             mTitle_strategy = (TextView) itemView.findViewById(R.id.title_strategy);
             mSubtitle_strategy = (TextView) itemView.findViewById(R.id.subtitle_strategy);

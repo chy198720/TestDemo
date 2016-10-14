@@ -1,9 +1,9 @@
 package com.lanou3g.testdemo.task;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import com.android.volley.Request;
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.ImageLoader;
+import com.android.volley.toolbox.Volley;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
@@ -27,35 +27,38 @@ import android.view.View;
  * 　　　　　　　　　┗┓┓┏━┳┓┏┛ + + + +
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
- * <p/>
- * Created by 程洪运 on 16/9/19.
+ * <p>
+ * Created by 程洪运 on 16/10/14.
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public class SinglQueue {
+    private static SinglQueue singlQueue;
+    private RequestQueue requestQueue;
+    private ImageLoader imageLoader;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(setLayout());
-
-        initView();
-        initData();
+    private SinglQueue() {
+        requestQueue = Volley.newRequestQueue(MyApp.getContext());
+        imageLoader = new ImageLoader(requestQueue, new MemoryCache());
     }
 
-
-    protected abstract int setLayout();
-
-    protected abstract void initData();
-
-    protected abstract void initView();
-
-    protected <T extends View> T bindView(int id){
-        return (T) findViewById(id);
+    public ImageLoader getmImageLoader() {
+        return imageLoader;
     }
 
-
-
-    protected NetTool tool() {
-        return new NetTool();
+    public static SinglQueue getInstance() {
+        if (singlQueue == null) {
+            synchronized (SinglQueue.class) {
+                if (singlQueue == null) {
+                    singlQueue = new SinglQueue();
+                }
+            }
+        }
+        return singlQueue;
     }
 
+    public void addRequest(Request request) {
+        requestQueue.add(request);
+    }
 }
+
+
+

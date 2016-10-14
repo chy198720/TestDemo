@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="#f5f2f2"
+                android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/tv_lm_brief"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="#ffffff"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:text="简介"
+        android:textColor="#5e5e5e" />
+
+    <RelativeLayout
+        android:id="@+id/tl_lm_head"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_below="@id/tv_lm_brief"
+        android:layout_marginTop="1dp"
+        android:background="#ffffff">
+
+        <TextView
+            android:id="@+id/tv_lm_description"
+            android:layout_width="350dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginLeft="10dp"
+            android:ellipsize="end"
+            android:singleLine="true"
+            android:textColor="#313131"
+            android:textSize="14.5sp" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:layout_below="@id/tl_lm_head"
+        android:layout_marginTop="7dp"
+        android:background="#ffffff"
+        android:paddingLeft="10dp"
+        android:paddingTop="10dp"
+        android:text="列表"
+        android:textColor="#5e5e5e" />
+
+
+</RelativeLayout>

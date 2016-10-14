@@ -1,9 +1,12 @@
 package com.lanou3g.testdemo.task;
 
-import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v7.app.AppCompatActivity;
-import android.view.View;
+import android.graphics.Bitmap;
+import android.graphics.BitmapShader;
+import android.graphics.Canvas;
+import android.graphics.ColorFilter;
+import android.graphics.Paint;
+import android.graphics.Shader;
+import android.graphics.drawable.Drawable;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
@@ -27,35 +30,46 @@ import android.view.View;
  * 　　　　　　　　　┗┓┓┏━┳┓┏┛ + + + +
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
- * <p/>
- * Created by 程洪运 on 16/9/19.
+ * <p>
+ * Created by 程洪运 on 16/10/14.
  */
-public abstract class BaseActivity extends AppCompatActivity {
+public class MyDrawable extends Drawable {
+    private Bitmap bitmap;
+
+    private final Paint paint;
+
+
+    public MyDrawable(Bitmap bitmap) {
+        this.bitmap = bitmap;
+        paint = new Paint();
+        paint.setShader(new BitmapShader(bitmap, Shader.TileMode.CLAMP, Shader.TileMode.CLAMP));
+    }
+
+
 
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(setLayout());
-
-        initView();
-        initData();
+    public void draw(Canvas canvas) {
+        canvas.drawCircle(bitmap.getWidth()/2,bitmap.getHeight()/2,bitmap.getWidth()/2,paint);
     }
 
+    @Override
+    public void setAlpha(int alpha) {
 
-    protected abstract int setLayout();
-
-    protected abstract void initData();
-
-    protected abstract void initView();
-
-    protected <T extends View> T bindView(int id){
-        return (T) findViewById(id);
     }
 
+    @Override
+    public void setColorFilter(ColorFilter colorFilter) {
 
-
-    protected NetTool tool() {
-        return new NetTool();
     }
 
+    @Override
+    public void setBounds(int left, int top, int right, int bottom) {
+        super.setBounds(0, 0, bitmap.getWidth(), bitmap.getHeight());
+
+    }
+
+    @Override
+    public int getOpacity() {
+        return 0;
+    }
 }

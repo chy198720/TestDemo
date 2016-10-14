@@ -25,6 +25,9 @@ public final class URLValues {
     public static final String CLASS_STRATEGY_CATEGORY = "http://api.liwushuo.com/v2/channel_groups/all";
     // 单品listView
     public static final String CLASS_SKU_LIST = "http://api.liwushuo.com/v2/item_categories/tree";
+    // 栏目的二级页面需拼接
+    public static final String LM_SKIP = "http://api.liwushuo.com/v2/columns/";
+    public static final String LM_SKIP1 = "?limit=20&offset=0";
 
 
 //    ______________________________________________________________________________________
