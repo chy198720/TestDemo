@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:orientation="horizontal"
+              android:layout_width="match_parent"
+              android:layout_height="60dp">
+
+    <ImageView
+        android:id="@+id/img_column"
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="match_parent"/>
+
+
+    <LinearLayout
+        android:layout_width="0dp"
+        android:layout_weight="2"
+        android:orientation="vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_height="match_parent">
+
+
+        <TextView
+            android:id="@+id/text_column"
+            android:text="呵呵哈哈哈"
+            android:layout_width="match_parent"
+            android:gravity="center_vertical"
+            android:layout_height="0dp"
+            android:layout_weight="1"/>
+
+
+        <TextView
+            android:id="@+id/text_View_column"
+            android:text="规范嘎嘎嘎"
+            android:gravity="center_vertical"
+            android:layout_width="match_parent"
+            android:layout_weight="1"
+            android:layout_height="0dp"/>
+
+
+    </LinearLayout>
+
+
+    <ImageView
+        android:id="@+id/img_View_column"
+        android:layout_width="0dp"
+        android:layout_weight="1"
+        android:layout_marginTop="10dp"
+        android:src="@mipmap/ic_product_collection_create"
+        android:padding="20dp"
+        android:layout_height="match_parent"/>
+
+
+</LinearLayout>

@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+              android:layout_width="match_parent"
+              android:layout_height="match_parent"
+              android:orientation="vertical">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:background="@mipmap/photo"
+        android:orientation="vertical">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/iv_me_message"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="10dp"
+                android:alpha="1"
+                android:src="@mipmap/icon_message"/>
+
+            <ImageView
+                android:id="@+id/iv_me_scan"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_margin="10dp"
+                android:layout_toLeftOf="@+id/iv_me_setting"
+                android:alpha="1"
+                android:src="@mipmap/icon_scan"/>
+
+            <ImageView
+                android:id="@+id/iv_me_setting"
+                android:layout_width="20dp"
+                android:layout_height="20dp"
+                android:layout_alignParentRight="true"
+                android:layout_margin="10dp"
+                android:alpha="1"
+                android:src="@mipmap/me_settings"/>
+        </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_My_Please_log_in"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <ImageView
+                android:id="@+id/iv_me_avatar_boy"
+                android:layout_width="50dp"
+                android:layout_height="50dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="30dp"
+                android:src="@mipmap/me_avatar_boy"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:text="请登录"
+                android:textColor="#ffffff"
+                android:textSize="20dp"/>
+        </LinearLayout>
+    </LinearLayout>
+
+    <include layout="@layout/fragment_me_kind"/>
+
+
+    <RadioGroup
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="5dp"
+        android:orientation="horizontal">
+
+        <RadioButton
+            android:id="@+id/radio_sub"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/me_underline"
+            android:button="@null"
+            android:gravity="center"
+            android:text="单品"/>
+
+        <RadioButton
+            android:id="@+id/radio_radius"
+            android:layout_width="0dp"
+            android:layout_height="48dp"
+            android:layout_weight="1"
+            android:background="@drawable/me_underline"
+            android:button="@null"
+            android:gravity="center"
+            android:text="攻略"/>
+    </RadioGroup>
+</LinearLayout>
+
+
+
