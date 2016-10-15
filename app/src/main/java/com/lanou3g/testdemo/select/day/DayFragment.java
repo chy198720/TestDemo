@@ -1,33 +1,20 @@
 package com.lanou3g.testdemo.select.day;
 
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
-import com.google.gson.Gson;
 import com.lanou3g.testdemo.R;
-import com.lanou3g.testdemo.home.send.SendFragment;
-import com.lanou3g.testdemo.home.tab.TabFragment;
 import com.lanou3g.testdemo.select.ItemActivity;
-import com.lanou3g.testdemo.select.SelectFragment;
 import com.lanou3g.testdemo.select.day.DayAdapter.OnItemClickListener;
 import com.lanou3g.testdemo.task.BaseFragment;
 import com.lanou3g.testdemo.task.NetTool;
+import com.lanou3g.testdemo.task.NetTool.NetInterface;
 import com.lanou3g.testdemo.task.URLValues;
-import com.lanou3g.testdemo.task.VolleySingleton;
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
@@ -51,15 +38,15 @@ import java.util.ArrayList;
  * 　　　　　　　　　┗┓┓┏━┳┓┏┛ + + + +
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
- * <p>
+ * <p/>
  * Created by 程洪运 on 16/9/20.
  */
 public class DayFragment extends BaseFragment {
 
     private RecyclerView mRecyclerView;
     private RecyclerViewHeader mHeader;
-    ArrayList<Fragment> mFragments = new ArrayList<>();
     private ImageView img;
+    NetTool mTool = new NetTool();
 
     @Override
     protected int setLayout() {
@@ -79,28 +66,14 @@ public class DayFragment extends BaseFragment {
     protected void initData() {
 
 
-        final ArrayList<DayBean> dayBeen = new ArrayList<>();
-
-        StringRequest stringRequest = new StringRequest(URLValues.SELECT_DAY, new Listener<String>() {
+        mTool.getData(URLValues.SELECT_DAY, DayBean.class, new NetInterface<DayBean>() {
             @Override
-            public void onResponse(String response) {
+            public void onSuccess(final DayBean dayBean) {
+                mTool.getImg(dayBean.getData().getCover_image(), img);
 
-                Gson gson = new Gson();
-                final DayBean dayBean = gson.fromJson(response,DayBean.class);
-                for (int i = 0; i < dayBean.getData().getItems().size(); i++) {
-                    dayBean.getData().getItems().get(i).getCover_image_url();
-                    dayBean.getData().getItems().get(i).getShort_description();
-                    dayBean.getData().getItems().get(i).getName();
-                    dayBean.getData().getItems().get(i).getPrice();
-                    dayBeen.add(dayBean);
-                }
-
-                NetTool tool = new NetTool();
-                tool.getImg(dayBean.getData().getCover_image(),img);
-
-                DayAdapter adapter = new DayAdapter(getContext());
-                adapter.setDayBeen(dayBeen);
-                GridLayoutManager manager = new GridLayoutManager(getContext(),2);
+                DayAdapter adapter = new DayAdapter();
+                adapter.setDayBeen(dayBean);
+                GridLayoutManager manager = new GridLayoutManager(getContext(), 2);
                 mRecyclerView.setLayoutManager(manager);
                 mRecyclerView.setAdapter(adapter);
                 mHeader.attachTo(mRecyclerView, true);
@@ -116,18 +89,13 @@ public class DayFragment extends BaseFragment {
                         }
                     }
                 });
-
-
             }
-        }, new ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onError(String errorMsg) {
 
             }
         });
-        VolleySingleton.getInstance().addRequest(stringRequest);
-
-
 
     }
 }

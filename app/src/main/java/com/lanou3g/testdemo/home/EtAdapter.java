@@ -8,6 +8,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.lanou3g.testdemo.R;
+import com.lanou3g.testdemo.task.MyApp;
 
 import java.util.ArrayList;
 
@@ -37,26 +38,21 @@ import java.util.ArrayList;
  * Created by 程洪运 on 16/10/11.
  */
 public class EtAdapter extends BaseAdapter {
-    Context mContext;
 
-    ArrayList<BoxBean> mBoxBeen = new ArrayList<>();
+    BoxBean mBoxBeen;
 
-    public EtAdapter(Context context) {
-        mContext = context;
-    }
-
-    public void setBoxBeen(ArrayList<BoxBean> boxBeen) {
+    public void setBoxBeen(BoxBean boxBeen) {
         mBoxBeen = boxBeen;
     }
 
     @Override
     public int getCount() {
-        return mBoxBeen.size();
+        return mBoxBeen.getData().getHot_words().size();
     }
 
     @Override
     public Object getItem(int i) {
-        return mBoxBeen.get(i);
+        return mBoxBeen.getData().getHot_words().get(i);
     }
 
     @Override
@@ -68,14 +64,14 @@ public class EtAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder = null;
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_gridview, null);
+            view = LayoutInflater.from(MyApp.getContext()).inflate(R.layout.item_gridview, null);
             viewHolder = new ViewHolder(view);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
 
-        viewHolder.mEt_text_item.setText(mBoxBeen.get(i).getData().getHot_words().get(i).getWord());
+        viewHolder.mEt_text_item.setText(mBoxBeen.getData().getHot_words().get(i).getWord());
 
         return view;
     }

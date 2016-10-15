@@ -6,17 +6,11 @@ import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
 
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.google.gson.Gson;
 import com.lanou3g.testdemo.R;
 import com.lanou3g.testdemo.task.BaseActivity;
+import com.lanou3g.testdemo.task.NetTool;
+import com.lanou3g.testdemo.task.NetTool.NetInterface;
 import com.lanou3g.testdemo.task.URLValues;
-import com.lanou3g.testdemo.task.VolleySingleton;
-
-import java.util.ArrayList;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
@@ -48,7 +42,7 @@ public class EtActivity extends BaseActivity implements OnClickListener {
     private EditText mEditText;
     private TextView mTextView;
     private GridView mGridView;
-    private EtAdapter mAdapter;
+    NetTool mTool = new NetTool();
 
     @Override
     protected int setLayout() {
@@ -66,32 +60,22 @@ public class EtActivity extends BaseActivity implements OnClickListener {
     @Override
     protected void initView() {
 
-        mAdapter = new EtAdapter(this);
-        final ArrayList<BoxBean> boxBeen = new ArrayList<>();
 
-        StringRequest mStringRequests = new StringRequest(URLValues.EDITTEXT, new Listener<String>() {
+        mTool.getData(URLValues.EDITTEXT, BoxBean.class, new NetInterface<BoxBean>() {
             @Override
-            public void onResponse(String response) {
-                Gson mGson = new Gson();
-                BoxBean boxBean = mGson.fromJson(response, BoxBean.class);
+            public void onSuccess(BoxBean boxBean) {
+                EtAdapter adapter = new EtAdapter();
                 mEditText.setHint(boxBean.getData().getPlaceholder());
                 mEditText.setTextSize(10);
-                for (int i = 0; i < boxBean.getData().getHot_words().size(); i++) {
-                    boxBeen.add(boxBean);
-                }
-                mAdapter.setBoxBeen(boxBeen);
-                mGridView.setAdapter(mAdapter);
+                adapter.setBoxBeen(boxBean);
+                mGridView.setAdapter(adapter);
             }
-        }, new ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onError(String errorMsg) {
 
             }
-
         });
-
-        VolleySingleton.getInstance().addRequest(mStringRequests);
-
 
     }
 

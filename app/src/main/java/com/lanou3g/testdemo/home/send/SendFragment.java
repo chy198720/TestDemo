@@ -2,23 +2,16 @@ package com.lanou3g.testdemo.home.send;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.Toast;
 
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.google.gson.Gson;
 import com.lanou3g.testdemo.R;
 import com.lanou3g.testdemo.home.homepager.HomeItemActivity;
 import com.lanou3g.testdemo.task.BaseFragment;
-import com.lanou3g.testdemo.task.VolleySingleton;
-
-import java.util.ArrayList;
+import com.lanou3g.testdemo.task.NetTool;
+import com.lanou3g.testdemo.task.NetTool.NetInterface;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
@@ -49,6 +42,7 @@ public class SendFragment extends BaseFragment {
 
     private ListView mListView;
     private String strUrl;
+    NetTool mTool = new NetTool();
 
     @Override
     protected int setLayout() {
@@ -71,38 +65,21 @@ public class SendFragment extends BaseFragment {
 
 //        ------------------------------------------Gson
 
-
-        final ArrayList<SendBean> mBeans = new ArrayList<>();
-
-        final StringRequest stringRequest = new StringRequest(strUrl, new Listener<String>() {
+        mTool.getData(strUrl, SendBean.class, new NetInterface<SendBean>() {
             @Override
-            public void onResponse(String response) {
-                Gson gson = new Gson();
-                SendBean bean = gson.fromJson(response, SendBean.class);
-                Log.d("TabFragment", "bean:" + bean);
-                for (int i = 0; i < bean.getData().getItems().size(); i++) {
-                    mBeans.add(bean);
-                }
-                SendAdapter adapter = new SendAdapter(getContext());
-                adapter.setSendBeen(mBeans);
+            public void onSuccess(SendBean sendBean) {
+                SendAdapter adapter = new SendAdapter();
+                adapter.setSendBeen(sendBean);
                 mListView.setAdapter(adapter);
             }
-        }, new ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
 
+            @Override
+            public void onError(String errorMsg) {
 
             }
         });
 
-        VolleySingleton.getInstance().addRequest(stringRequest);
-
-
-
 //-------------------------------------跳转
-
-
-
 
         mListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override

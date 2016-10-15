@@ -1,6 +1,6 @@
 package com.lanou3g.testdemo.classification.sku;
 
-import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.view.LayoutInflater;
@@ -72,6 +72,7 @@ public class RecycleAdapter extends Adapter<RecyclesViewHolder> {
         holder.mName.setText(mSkuItemBean.getData().getCategories()
                 .get(number).getSubcategories().get(position)
                 .getName());
+        holder.mName.setTextColor(Color.BLUE);
 
         holder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override

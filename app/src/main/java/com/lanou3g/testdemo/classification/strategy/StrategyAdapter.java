@@ -1,6 +1,7 @@
 package com.lanou3g.testdemo.classification.strategy;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.support.v7.widget.RecyclerView.Adapter;
 import android.support.v7.widget.RecyclerView.ViewHolder;
 import android.view.LayoutInflater;
@@ -69,8 +70,11 @@ public class StrategyAdapter extends Adapter<StrategyAdapter.StrategyViewHolder>
         NetTool tool = new NetTool();
         tool.getImg(mStrategyBeen.getData().getColumns().get(position).getBanner_image_url(),holder.mBanner_image_url);
         holder.mTitle_strategy.setText(mStrategyBeen.getData().getColumns().get(position).getTitle());
+        holder.mTitle_strategy.setTextColor(Color.BLACK);
         holder.mSubtitle_strategy.setText(mStrategyBeen.getData().getColumns().get(position).getSubtitle());
+        holder.mSubtitle_strategy.setTextColor(Color.BLACK);
         holder.mAuthor_strategy.setText(mStrategyBeen.getData().getColumns().get(position).getAuthor());
+        holder.mAuthor_strategy.setTextColor(Color.CYAN);
         holder.mLinearLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

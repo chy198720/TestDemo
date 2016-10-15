@@ -2,7 +2,6 @@ package com.lanou3g.testdemo.task;
 
 import android.graphics.Bitmap;
 import android.graphics.Matrix;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 
 import com.android.volley.Response;
@@ -10,7 +9,6 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.StringRequest;
 import com.google.gson.Gson;
-import com.lanou3g.testdemo.R;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
@@ -41,7 +39,7 @@ public class NetTool {
     // 正常图片带缩放
     public void getImg(String url, ImageView imageView) {
 
-        ImageLoader imageLoader = SinglQueue.getInstance().getmImageLoader();
+        ImageLoader imageLoader = SingLQueue.getInstance().getmImageLoader();
 
         imageLoader.get(url, new MyImageListener1(imageView));
 
@@ -103,7 +101,7 @@ public class NetTool {
             }
         });
 
-        SinglQueue.getInstance().addRequest(stringRequest);
+        SingLQueue.getInstance().addRequest(stringRequest);
 
     }
 

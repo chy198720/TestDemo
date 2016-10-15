@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lanou3g.testdemo.R;
+import com.lanou3g.testdemo.task.MyApp;
 import com.lanou3g.testdemo.task.NetTool;
 import com.squareup.picasso.Picasso;
 
@@ -41,26 +42,21 @@ import java.util.ArrayList;
  */
 public class SendAdapter extends BaseAdapter {
 
-    Context mContext;
 
-    public SendAdapter(Context context) {
-        mContext = context;
-    }
+    SendBean mSendBeen;
 
-    ArrayList<SendBean> mSendBeen = new ArrayList<>();
-
-    public void setSendBeen(ArrayList<SendBean> sendBeen) {
+    public void setSendBeen(SendBean sendBeen) {
         mSendBeen = sendBeen;
     }
 
     @Override
     public int getCount() {
-        return mSendBeen.size();
+        return mSendBeen.getData().getItems().size();
     }
 
     @Override
     public Object getItem(int i) {
-        return mSendBeen.get(i);
+        return mSendBeen.getData().getItems().get(i);
     }
 
     @Override
@@ -72,21 +68,19 @@ public class SendAdapter extends BaseAdapter {
     public View getView(int i, View view, ViewGroup viewGroup) {
         ViewHolder viewHolder = null;
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_send, null);
+            view = LayoutInflater.from(MyApp.getContext()).inflate(R.layout.item_send, null);
             viewHolder = new ViewHolder(view);
             view.setTag(viewHolder);
         } else {
             viewHolder = (ViewHolder) view.getTag();
         }
-        SendBean sendBean = mSendBeen.get(i);
-
         NetTool tool = new NetTool();
-        tool.getImg(sendBean.getData().getItems().get(i).getCover_image_url(), viewHolder.mImg);
-        viewHolder.mTv_title.setText(sendBean.getData().getItems().get(i).getTitle());
-        viewHolder.category_tex.setText(sendBean.getData().getItems().get(i).getColumn().getCategory());
-        viewHolder.title_tex.setText(sendBean.getData().getItems().get(i).getColumn().getTitles());
-        viewHolder.nickname_tex.setText(sendBean.getData().getItems().get(i).getAuthor().getNickname());
-        tool.getImg(sendBean.getData().getItems().get(i).getAuthor().getAvatar_url(), viewHolder.img_avatar_url);
+        tool.getImg(mSendBeen.getData().getItems().get(i).getCover_image_url(), viewHolder.mImg);
+        viewHolder.mTv_title.setText(mSendBeen.getData().getItems().get(i).getTitle());
+        viewHolder.category_tex.setText(mSendBeen.getData().getItems().get(i).getColumn().getCategory());
+        viewHolder.title_tex.setText(mSendBeen.getData().getItems().get(i).getColumn().getTitles());
+        viewHolder.nickname_tex.setText(mSendBeen.getData().getItems().get(i).getAuthor().getNickname());
+        tool.getImg(mSendBeen.getData().getItems().get(i).getAuthor().getAvatar_url(), viewHolder.img_avatar_url);
         return view;
     }
 

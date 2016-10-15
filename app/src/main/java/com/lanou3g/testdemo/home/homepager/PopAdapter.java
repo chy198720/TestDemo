@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.TextView;
 
 import com.lanou3g.testdemo.R;
+import com.lanou3g.testdemo.task.MyApp;
 
 import java.util.ArrayList;
 
@@ -39,11 +40,8 @@ import java.util.ArrayList;
  */
 public class PopAdapter extends BaseAdapter{
 
-    Context mContext;
 
-    public PopAdapter(Context context) {
-        mContext = context;
-    }
+
 
     HomeBean mHomeBean;
     ArrayList<Fragment> mFragments = new ArrayList<>();
@@ -75,7 +73,7 @@ public class PopAdapter extends BaseAdapter{
     public View getView(int i, View view, ViewGroup viewGroup) {
         PopHolder popHolder = null;
         if (view == null) {
-            view = LayoutInflater.from(mContext).inflate(R.layout.item_pop,null);
+            view = LayoutInflater.from(MyApp.getContext()).inflate(R.layout.item_pop,null);
             popHolder = new PopHolder(view);
             view.setTag(popHolder);
         }else {

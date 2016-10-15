@@ -10,11 +10,6 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.google.gson.Gson;
 import com.lanou3g.testdemo.R;
 import com.lanou3g.testdemo.home.BoxBean;
 import com.lanou3g.testdemo.home.EtActivity;
@@ -24,9 +19,7 @@ import com.lanou3g.testdemo.task.MyApp;
 import com.lanou3g.testdemo.task.NetTool;
 import com.lanou3g.testdemo.task.NetTool.NetInterface;
 import com.lanou3g.testdemo.task.URLValues;
-import com.lanou3g.testdemo.task.VolleySingleton;
 
-import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 

@@ -1,34 +1,21 @@
 package com.lanou3g.testdemo.select;
 
 import android.content.Intent;
-import android.support.v4.app.Fragment;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.View;
-import android.view.View.OnClickListener;
-import android.widget.AdapterView;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
 import com.bartoszlipinski.recyclerviewheader.RecyclerViewHeader;
-import com.google.gson.Gson;
 import com.lanou3g.testdemo.R;
-import com.lanou3g.testdemo.home.homepager.HomeItemActivity;
-import com.lanou3g.testdemo.home.send.SendBean;
 import com.lanou3g.testdemo.select.day.DayAdapter;
 import com.lanou3g.testdemo.select.day.DayAdapter.OnItemClickListener;
 import com.lanou3g.testdemo.select.day.DayBean;
 import com.lanou3g.testdemo.task.BaseFragment;
 import com.lanou3g.testdemo.task.NetTool;
+import com.lanou3g.testdemo.task.NetTool.NetInterface;
 import com.lanou3g.testdemo.task.URLValues;
-import com.lanou3g.testdemo.task.VolleySingleton;
-import com.squareup.picasso.Picasso;
-
-import java.util.ArrayList;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
@@ -60,6 +47,7 @@ public class TOPFragment extends BaseFragment {
     private RecyclerViewHeader mHeader;
     private ImageView img;
     private DayAdapter mAdapter;
+    NetTool mTool = new NetTool();
 
     @Override
     protected int setLayout() {
@@ -79,33 +67,18 @@ public class TOPFragment extends BaseFragment {
     protected void initData() {
 
 
-        final ArrayList<DayBean> dayBeen = new ArrayList<>();
-
-        StringRequest stringRequest = new StringRequest(URLValues.SELECT_TOP, new Listener<String>() {
+        mTool.getData(URLValues.SELECT_TOP, DayBean.class, new NetInterface<DayBean>() {
             @Override
-            public void onResponse(String response) {
+            public void onSuccess(final DayBean dayBean) {
+                mTool.getImg(dayBean.getData().getCover_image(), img);
 
-                Gson gson = new Gson();
-                final DayBean dayBean = gson.fromJson(response,DayBean.class);
-                for (int i = 0; i < dayBean.getData().getItems().size(); i++) {
-                    dayBean.getData().getItems().get(i).getCover_image_url();
-                    dayBean.getData().getItems().get(i).getShort_description();
-                    dayBean.getData().getItems().get(i).getName();
-                    dayBean.getData().getItems().get(i).getPrice();
-                    dayBeen.add(dayBean);
-
-                }
-
-
-                NetTool tool = new NetTool();
-                tool.getImg(dayBean.getData().getCover_image(), img);
-                mAdapter = new DayAdapter(getContext());
-                mAdapter.setDayBeen(dayBeen);
-                GridLayoutManager manager = new GridLayoutManager(getContext(),2);
+                DayAdapter adapter = new DayAdapter();
+                adapter.setDayBeen(dayBean);
+                GridLayoutManager manager = new GridLayoutManager(getContext(), 2);
                 mRecyclerView.setLayoutManager(manager);
-                mRecyclerView.setAdapter(mAdapter);
+                mRecyclerView.setAdapter(adapter);
                 mHeader.attachTo(mRecyclerView, true);
-                mAdapter.setRecommendOnItemClickListener(new OnItemClickListener() {
+                adapter.setRecommendOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void OnItemClickListener(View view, int position) {
                         if (dayBean.getData().getItems().get(position).getPurchase_url() != null) {
@@ -117,16 +90,13 @@ public class TOPFragment extends BaseFragment {
                         }
                     }
                 });
-
             }
-        }, new ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onError(String errorMsg) {
 
             }
         });
-        VolleySingleton.getInstance().addRequest(stringRequest);
-
     }
 }
 

@@ -25,8 +25,7 @@
         android:layout_height="match_parent"
         android:background="#9f9f9f"
         android:divider="#9f9f9f"
-        android:dividerHeight="5dp"
-        android:scrollbars="none"/>
+        android:dividerHeight="5dp"/>
 
         <ListView
             android:id="@+id/list_View_SKU"

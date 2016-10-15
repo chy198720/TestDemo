@@ -2,17 +2,11 @@ package com.lanou3g.testdemo.classification.strategy;
 
 import android.widget.ListView;
 
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.google.gson.Gson;
 import com.lanou3g.testdemo.R;
 import com.lanou3g.testdemo.task.BaseActivity;
 import com.lanou3g.testdemo.task.NetTool;
 import com.lanou3g.testdemo.task.NetTool.NetInterface;
 import com.lanou3g.testdemo.task.URLValues;
-import com.lanou3g.testdemo.task.VolleySingleton;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +

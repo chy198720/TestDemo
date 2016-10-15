@@ -11,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.lanou3g.testdemo.R;
+import com.lanou3g.testdemo.task.MyApp;
 import com.lanou3g.testdemo.task.NetTool;
 import com.squareup.picasso.Picasso;
 
@@ -42,7 +43,6 @@ import java.util.ArrayList;
  * Created by 程洪运 on 16/9/23.
  */
 public class DayAdapter extends Adapter<DayAdapter.DayViewHolder> {
-    Context mContext;
     private OnItemClickListener recommendOnItemClickListener;
 
 
@@ -56,31 +56,27 @@ public class DayAdapter extends Adapter<DayAdapter.DayViewHolder> {
     }
 
 
-    public DayAdapter(Context context) {
-        mContext = context;
-    }
 
-    ArrayList<DayBean> mDayBeen = new ArrayList<>();
+    DayBean mDayBeen;
 
-    public void setDayBeen(ArrayList<DayBean> dayBeen) {
+    public void setDayBeen(DayBean dayBeen) {
         mDayBeen = dayBeen;
     }
 
     @Override
     public DayViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(mContext).inflate(R.layout.item_day, null);
+        View view = LayoutInflater.from(MyApp.getContext()).inflate(R.layout.item_day, null);
         DayViewHolder viewHolder = new DayViewHolder(view);
         return viewHolder;
     }
 
     @Override
     public void onBindViewHolder(final DayViewHolder holder, int position) {
-        DayBean dayBean = mDayBeen.get(position);
         NetTool tool = new NetTool();
-        tool.getImg(dayBean.getData().getItems().get(position).getCover_image_url(), holder.mCover_image_url);
-        holder.mShort_description.setText(dayBean.getData().getItems().get(position).getShort_description());
-        holder.mName.setHint(dayBean.getData().getItems().get(position).getName());
-        holder.mPrice.setText("¥" + dayBean.getData().getItems().get(position).getPrice());
+        tool.getImg(mDayBeen.getData().getItems().get(position).getCover_image_url(), holder.mCover_image_url);
+        holder.mShort_description.setText(mDayBeen.getData().getItems().get(position).getShort_description());
+        holder.mName.setHint(mDayBeen.getData().getItems().get(position).getName());
+        holder.mPrice.setText("¥" + mDayBeen.getData().getItems().get(position).getPrice());
         if (recommendOnItemClickListener != null) {
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -95,7 +91,7 @@ public class DayAdapter extends Adapter<DayAdapter.DayViewHolder> {
 
     @Override
     public int getItemCount() {
-        return mDayBeen.size();
+        return mDayBeen.getData().getItems().size();
     }
 
     public class DayViewHolder extends ViewHolder {

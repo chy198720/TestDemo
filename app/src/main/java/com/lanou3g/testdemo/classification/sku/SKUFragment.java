@@ -1,8 +1,6 @@
 package com.lanou3g.testdemo.classification.sku;
 
 import android.content.Intent;
-import android.graphics.Color;
-import android.util.Log;
 import android.view.View;
 import android.widget.AbsListView;
 import android.widget.AbsListView.OnScrollListener;
@@ -11,11 +9,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.google.gson.Gson;
 import com.lanou3g.testdemo.R;
 import com.lanou3g.testdemo.home.BoxBean;
 import com.lanou3g.testdemo.task.BaseFragment;
@@ -24,9 +17,6 @@ import com.lanou3g.testdemo.task.MyApp;
 import com.lanou3g.testdemo.task.NetTool;
 import com.lanou3g.testdemo.task.NetTool.NetInterface;
 import com.lanou3g.testdemo.task.URLValues;
-import com.lanou3g.testdemo.task.VolleySingleton;
-
-import java.util.ArrayList;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +
@@ -134,7 +124,6 @@ public class SKUFragment extends BaseFragment {
                     userScrolled = false;
                 } else {
                     userScrolled = true;
-                    mList_sku.setBackgroundColor(Color.YELLOW);
                 }
             }
 

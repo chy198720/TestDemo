@@ -20,11 +20,6 @@ import android.widget.ListView;
 import android.widget.PopupWindow;
 import android.widget.PopupWindow.OnDismissListener;
 
-import com.android.volley.Response.ErrorListener;
-import com.android.volley.Response.Listener;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.StringRequest;
-import com.google.gson.Gson;
 import com.lanou3g.testdemo.R;
 import com.lanou3g.testdemo.home.BoxBean;
 import com.lanou3g.testdemo.home.EtActivity;
@@ -32,8 +27,9 @@ import com.lanou3g.testdemo.home.send.SendFragment;
 import com.lanou3g.testdemo.home.tab.TabFragment;
 import com.lanou3g.testdemo.my.LoginActivity;
 import com.lanou3g.testdemo.task.BaseFragment;
+import com.lanou3g.testdemo.task.NetTool;
+import com.lanou3g.testdemo.task.NetTool.NetInterface;
 import com.lanou3g.testdemo.task.URLValues;
-import com.lanou3g.testdemo.task.VolleySingleton;
 
 import java.util.ArrayList;
 
@@ -59,7 +55,7 @@ import java.util.ArrayList;
  * 　　　　　　　　　┗┓┓┏━┳┓┏┛ + + + +
  * 　　　　　　　　　　┃┫┫　┃┫┫
  * 　　　　　　　　　　┗┻┛　┗┻┛+ + + +
- * <p>
+ * <p/>
  * Created by 程洪运 on 16/9/19.
  */
 public class HomeFragment extends BaseFragment implements OnClickListener {
@@ -78,6 +74,8 @@ public class HomeFragment extends BaseFragment implements OnClickListener {
 
     private HomeBean mBean;
     private HomeBean mHomeBean;
+
+    NetTool mTool = new NetTool();
 
     @Override
     protected int setLayout() {
@@ -99,15 +97,11 @@ public class HomeFragment extends BaseFragment implements OnClickListener {
     @Override
     protected void initData() {
 
-
-
-        StringRequest stringRequest = new StringRequest(URLValues.ROLL_CHANNEL, new Listener<String>() {
+        mTool.getData(URLValues.ROLL_CHANNEL, HomeBean.class, new NetInterface<HomeBean>() {
             @Override
-            public void onResponse(String response) {
-                Gson gson = new Gson();
-                mBean = gson.fromJson(response, HomeBean.class);
-                for (int i = 0; i < mBean.getData().getChannels().size(); i++) {
-                    mStrings.add(mBean.getData().getChannels().get(i).getName());
+            public void onSuccess(HomeBean homeBean) {
+                for (int i = 0; i < homeBean.getData().getChannels().size(); i++) {
+                    mStrings.add(homeBean.getData().getChannels().get(i).getName());
                 }
                 for (int i = 0; i < mStrings.size(); i++) {
                     if (i == 0) {
@@ -115,7 +109,7 @@ public class HomeFragment extends BaseFragment implements OnClickListener {
                     } else {
                         SendFragment sendFragment = new SendFragment();
                         Bundle bundle = new Bundle();
-                        bundle.putString("url", String.valueOf(mBean.getData().getChannels().get(i).getId()));
+                        bundle.putString("url", String.valueOf(homeBean.getData().getChannels().get(i).getId()));
                         sendFragment.setArguments(bundle);
                         mFragments.add(sendFragment);
                     }
@@ -128,42 +122,26 @@ public class HomeFragment extends BaseFragment implements OnClickListener {
                 mTabLayout.setTabMode(TabLayout.MODE_SCROLLABLE);
 
 
-
-
             }
-        }, new ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onError(String errorMsg) {
 
             }
         });
 
-        VolleySingleton.getInstance().addRequest(stringRequest);
-
-
-
-
-
-
-
-
-        StringRequest mStringRequests = new StringRequest(URLValues.EDITTEXT, new Listener<String>() {
+        mTool.getData(URLValues.EDITTEXT, BoxBean.class, new NetInterface<BoxBean>() {
             @Override
-            public void onResponse(String response) {
-                Gson mGson = new Gson();
-                BoxBean boxBean = mGson.fromJson(response, BoxBean.class);
+            public void onSuccess(BoxBean boxBean) {
                 mEditText.setHint(boxBean.getData().getPlaceholder());
                 mEditText.setTextSize(10);
             }
-        }, new ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onError(String errorMsg) {
 
             }
         });
-
-        VolleySingleton.getInstance().addRequest(mStringRequests);
-
     }
 
 
@@ -189,33 +167,29 @@ public class HomeFragment extends BaseFragment implements OnClickListener {
 
     private void showPopupWindow() {
 
-        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_popupwindow_left,null);
+        View view = LayoutInflater.from(getActivity()).inflate(R.layout.fragment_popupwindow_left, null);
         popupWindow_Left = (ListView) view.findViewById(R.id.popupWindow_Left);
 
-
-        StringRequest stringRequest = new StringRequest(URLValues.ROLL_CHANNEL, new Listener<String>() {
+        mTool.getData(URLValues.ROLL_CHANNEL, HomeBean.class, new NetInterface<HomeBean>() {
             @Override
-            public void onResponse(String response) {
-                Gson gson = new Gson();
-                mHomeBean = gson.fromJson(response,HomeBean.class);
-                mPopAdapter = new PopAdapter(getContext());
-                mPopAdapter.setHomeBean(mHomeBean);
+            public void onSuccess(HomeBean homeBean) {
+                mPopAdapter = new PopAdapter();
+                mPopAdapter.setHomeBean(homeBean);
                 mPopAdapter.setFragments(mFragments);
                 popupWindow_Left.setAdapter(mPopAdapter);
             }
-        }, new ErrorListener() {
+
             @Override
-            public void onErrorResponse(VolleyError error) {
+            public void onError(String errorMsg) {
 
             }
         });
 
-        VolleySingleton.getInstance().addRequest(stringRequest);
 
         // 下面是两种方法得到宽度和高度 getWindow().getDecorView().getWidth()
 
         final PopupWindow window = new PopupWindow(view,
-                WindowManager.LayoutParams.MATCH_PARENT,800);
+                WindowManager.LayoutParams.MATCH_PARENT, 800);
 
         // 设置popWindow弹出窗体可点击，这句话必须添加，并且是true
         window.setFocusable(true);
@@ -237,7 +211,7 @@ public class HomeFragment extends BaseFragment implements OnClickListener {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
                 mViewPager.setCurrentItem(i);
-                if (window.isShowing()){
+                if (window.isShowing()) {
                     window.dismiss();
 
                 }

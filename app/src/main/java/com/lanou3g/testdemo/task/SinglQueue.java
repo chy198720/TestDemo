@@ -30,12 +30,12 @@ import com.android.volley.toolbox.Volley;
  * <p>
  * Created by 程洪运 on 16/10/14.
  */
-public class SinglQueue {
-    private static SinglQueue singlQueue;
+public class SingLQueue {
+    private static SingLQueue singlQueue;
     private RequestQueue requestQueue;
     private ImageLoader imageLoader;
 
-    private SinglQueue() {
+    private SingLQueue() {
         requestQueue = Volley.newRequestQueue(MyApp.getContext());
         imageLoader = new ImageLoader(requestQueue, new MemoryCache());
     }
@@ -44,11 +44,11 @@ public class SinglQueue {
         return imageLoader;
     }
 
-    public static SinglQueue getInstance() {
+    public static SingLQueue getInstance() {
         if (singlQueue == null) {
-            synchronized (SinglQueue.class) {
+            synchronized (SingLQueue.class) {
                 if (singlQueue == null) {
-                    singlQueue = new SinglQueue();
+                    singlQueue = new SingLQueue();
                 }
             }
         }

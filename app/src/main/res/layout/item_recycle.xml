@@ -10,7 +10,6 @@
 
         <ImageView
             android:id="@+id/recycle_icon_url"
-            android:src="@mipmap/ic_launcher"
             android:layout_marginBottom="5dp"
             android:layout_width="60dp"
             android:layout_height="60dp"/>

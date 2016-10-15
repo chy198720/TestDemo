@@ -30,7 +30,7 @@ public class PullToZoomListView extends ListView implements AbsListView.OnScroll
     float mLastScale = -1.0F;
     float mMaxScale = -1.0F;
     private AbsListView.OnScrollListener mOnScrollListener;
-    private ScalingRunnalable mScalingRunnalable;
+    private ScalingRunnable mScalingRunnable;
     private int mScreenHeight;
     private View mShadow;
 
@@ -54,7 +54,7 @@ public class PullToZoomListView extends ListView implements AbsListView.OnScroll
 
     private void endScraling() {
         if (this.mHeaderContainer.getBottom() >= this.mHeaderHeight)
-            this.mScalingRunnalable.startAnimation(200L);
+            this.mScalingRunnable.startAnimation(200L);
     }
 
     private void init(Context paramContext) {
@@ -76,7 +76,7 @@ public class PullToZoomListView extends ListView implements AbsListView.OnScroll
         this.mHeaderContainer.addView(this.mHeaderImage);
         this.mHeaderContainer.addView(this.mShadow);
         addHeaderView(this.mHeaderContainer);
-        this.mScalingRunnalable = new ScalingRunnalable();
+        this.mScalingRunnable = new ScalingRunnable();
         super.setOnScrollListener(this);
     }
 
@@ -139,8 +139,8 @@ public class PullToZoomListView extends ListView implements AbsListView.OnScroll
         switch (0xFF & paramMotionEvent.getAction()) {
             case 4:
             case 0:
-                if (!this.mScalingRunnalable.mIsFinished) {
-                    this.mScalingRunnalable.abortAnimation();
+                if (!this.mScalingRunnable.mIsFinished) {
+                    this.mScalingRunnable.abortAnimation();
                 }
                 this.mLastMotionY = paramMotionEvent.getY();
                 this.mActivePointerId = paramMotionEvent.getPointerId(0);
@@ -213,13 +213,13 @@ public class PullToZoomListView extends ListView implements AbsListView.OnScroll
     }
 
 
-    class ScalingRunnalable implements Runnable {
+    class ScalingRunnable implements Runnable {
         long mDuration;
         boolean mIsFinished = true;
         float mScale;
         long mStartTime;
 
-        ScalingRunnalable() {
+        ScalingRunnable() {
         }
 
         public void abortAnimation() {

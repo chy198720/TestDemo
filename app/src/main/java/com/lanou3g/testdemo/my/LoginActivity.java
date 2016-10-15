@@ -65,7 +65,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         login_text_Verification_code.setOnClickListener(this);
 
         login_linear_Verification_code.setVisibility(View.GONE);
-//        login_linear_The_login.setVisibility(View.GONE);
 
 
     }
@@ -81,7 +80,6 @@ public class LoginActivity extends BaseActivity implements OnClickListener {
         switch (view.getId()) {
             case R.id.login_text_The_area_code:
 
-//                startActivity(new Intent(LoginActivity.this, ));
                 Toast.makeText(this, "选择区号", Toast.LENGTH_SHORT).show();
 
                 break;
