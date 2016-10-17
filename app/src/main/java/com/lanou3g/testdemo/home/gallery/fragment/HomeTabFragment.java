@@ -1,6 +1,8 @@
 package com.lanou3g.testdemo.home.gallery.fragment;
 
 import android.content.Intent;
+import android.os.AsyncTask;
+import android.support.v4.widget.SwipeRefreshLayout.OnRefreshListener;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.AdapterView;
@@ -9,6 +11,7 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.ListView;
 
+import com.handmark.pulltorefresh.library.PullToRefreshListView;
 import com.lanou3g.testdemo.R;
 import com.lanou3g.testdemo.home.gallery.adapter.HomeTabAdapter;
 import com.lanou3g.testdemo.home.gallery.bean.HomeBannerBean;
@@ -20,6 +23,8 @@ import com.lanou3g.testdemo.base.MyApp;
 import com.lanou3g.testdemo.task.NetTool;
 import com.lanou3g.testdemo.task.NetTool.NetInterface;
 import com.lanou3g.testdemo.base.URLValues;
+import com.lanou3g.testdemo.task.PullListView;
+import com.lanou3g.testdemo.task.PullToZoomListView;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerClickListener;
 
@@ -54,7 +59,7 @@ public class HomeTabFragment extends BaseFragment {
 
     private LayoutInflater mInflater;
     private LinearLayout mGallery;
-    private ListView mListView;
+    private PullListView mListView;
     ArrayList<String> mArrayList = new ArrayList<>();
     ArrayList<String> mList = new ArrayList<>();
     private Banner mBanner;
@@ -62,6 +67,7 @@ public class HomeTabFragment extends BaseFragment {
     private ImageView mImg;
 
     NetTool mTool = new NetTool();
+    private HomeTabAdapter mAdapter;
 
     @Override
     protected int setLayout() {
@@ -82,9 +88,9 @@ public class HomeTabFragment extends BaseFragment {
         mTool.getData(URLValues.HOME_CELL, HomeTabBean.class, new NetInterface<HomeTabBean>() {
             @Override
             public void onSuccess(final HomeTabBean tabBean) {
-                HomeTabAdapter adapter = new HomeTabAdapter();
-                adapter.setTabBeen(tabBean);
-                mListView.setAdapter(adapter);
+                mAdapter = new HomeTabAdapter();
+                mAdapter.setTabBeen(tabBean);
+                mListView.setAdapter(mAdapter);
                 mListView.setOnItemClickListener(new OnItemClickListener() {
                     @Override
                     public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -154,6 +160,32 @@ public class HomeTabFragment extends BaseFragment {
                 startActivity(new Intent(getContext(), HomeItemActivity.class));
             }
         });
+
+
+        mListView.setonRefreshListener(new OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                new AsyncTask<Void, Void, Void>(){
+
+                    @Override
+                    protected Void doInBackground(Void... voids) {
+                        try {
+                            Thread.sleep(1800);
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        }
+                        return null;
+                    }
+
+                    @Override
+                    protected void onPostExecute(Void aVoid) {
+                        mAdapter.notifyDataSetChanged();
+                        mListView.onRefreshComplete();
+                    }
+                }.execute(null,null,null);
+            }
+        });
+
 
     }
 
