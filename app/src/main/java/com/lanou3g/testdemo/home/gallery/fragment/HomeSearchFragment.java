@@ -70,15 +70,15 @@ public class HomeSearchFragment extends BaseFragment {
             @Override
             public void onSuccess(HomeNameBean homeNameBean) {
                 List<Map<String, Object>> listItems = new ArrayList<Map<String, Object>>();
-                Map<String, Object> listItem = new HashMap<String, Object>();
                 for (int i = 0; i < homeNameBean.getData().getWords().size(); i++) {
+                    Map<String, Object> listItem = new HashMap<String, Object>();
                     listItem.put("name", homeNameBean.getData().getWords().get(i));
+                    listItems.add(listItem);
                 }
-                listItems.add(listItem);
+
                 SimpleAdapter adapter = new SimpleAdapter(getContext(), listItems, R.layout.simple_item,
                         new String[]{"name"}, new int[]{R.id.tv_search_slimply});
                 edit_home_fragment.setAdapter(adapter);
-
 
             }
 
