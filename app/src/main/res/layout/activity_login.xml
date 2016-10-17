@@ -165,18 +165,21 @@
 
 
         <ImageView
+            android:id="@+id/img_wei_bo"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:src="@mipmap/icon_log_sina"/>
 
         <ImageView
+            android:id="@+id/img_wei_xi"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:src="@mipmap/icon_log_wechat"/>
 
         <ImageView
+            android:id="@+id/img_q_q"
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
