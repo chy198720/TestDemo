@@ -27,5 +27,41 @@
 
     </HorizontalScrollView>
 
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="50dp"
+        android:layout_marginTop="5dp"
+        android:background="#ffffff">
+
+        <TextClock
+            android:id="@+id/tc_id"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:format12Hour="MM月dd日 EEEE"
+            android:gravity="center"
+            android:textColor="#252323"
+            android:textSize="14sp" />
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="0.01dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginRight="10dp"
+            android:layout_toLeftOf="@id/tc_id"
+            android:background="#4e4b4b" />
+
+        <View
+            android:layout_width="40dp"
+            android:layout_height="0.01dp"
+            android:layout_centerVertical="true"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginLeft="10dp"
+            android:layout_toRightOf="@id/tc_id"
+            android:background="#4e4b4b" />
+
+    </RelativeLayout>
+
 
 </LinearLayout>

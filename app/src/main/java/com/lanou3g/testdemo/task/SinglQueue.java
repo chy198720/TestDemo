@@ -4,6 +4,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.ImageLoader;
 import com.android.volley.toolbox.Volley;
+import com.lanou3g.testdemo.base.MyApp;
 
 /**
  * 　　　　　　　　┏┓　　　┏┓+ +

@@ -7,11 +7,11 @@ import android.view.View.OnClickListener;
 import android.widget.RadioButton;
 
 import com.lanou3g.testdemo.R;
-import com.lanou3g.testdemo.classification.ClassificationFragment;
-import com.lanou3g.testdemo.home.homepager.HomeFragment;
-import com.lanou3g.testdemo.my.MyFragment;
-import com.lanou3g.testdemo.select.SelectFragment;
-import com.lanou3g.testdemo.task.BaseActivity;
+import com.lanou3g.testdemo.classification.strategy.fragment.ClassificationFragment;
+import com.lanou3g.testdemo.home.homepager.fragment.HomeFragment;
+import com.lanou3g.testdemo.me.fragment.MyFragment;
+import com.lanou3g.testdemo.select.fragment.SelectFragment;
+import com.lanou3g.testdemo.base.BaseActivity;
 
 public class MainActivity extends BaseActivity implements OnClickListener {
 

@@ -132,7 +132,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="40dp"
-            android:background="#ff00ff"
+            android:background="@drawable/btn_miaobian"
             android:text="登录"
             android:textSize="20dp"/>
 

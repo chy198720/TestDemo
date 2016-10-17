@@ -4,7 +4,7 @@ import android.content.Intent;
 import android.os.Handler;
 
 import com.lanou3g.testdemo.R;
-import com.lanou3g.testdemo.task.BaseActivity;
+import com.lanou3g.testdemo.base.BaseActivity;
 
 
 public class WelcomeActivity extends BaseActivity {

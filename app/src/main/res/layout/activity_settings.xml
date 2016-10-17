@@ -12,7 +12,7 @@
 
         <ImageView
             android:id="@+id/img_Return"
-            android:layout_width="wrap_content"
+            android:layout_width="50dp"
             android:layout_height="match_parent"
             android:padding="15dp"
             android:src="@mipmap/credit_btn_back"/>

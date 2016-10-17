@@ -15,6 +15,7 @@
 
     <TextView
         android:text="查看全部 > "
+        android:textColor="#000"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>
 
