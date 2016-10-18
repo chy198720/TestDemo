@@ -40,11 +40,6 @@ import com.lanou3g.testdemo.task.NetTool;
  */
 public class StrategyItemListAdapter extends BaseAdapter {
     private StrategyItemBean lmSkipEntity;
-    private int index;
-
-    public void setIndex(int index) {
-        this.index = index;
-    }
 
     public void setLmSkipEntity(StrategyItemBean lmSkipEntity) {
         this.lmSkipEntity = lmSkipEntity;
@@ -80,20 +75,12 @@ public class StrategyItemListAdapter extends BaseAdapter {
 
         NetTool tool = new NetTool();
 
-        if (index == 911) {
-            viewHolder.tvLvtwoTitle.setText(lmSkipEntity.getData().getPosts().get(position).getTitle());
-            viewHolder.tvLvtwoTitle.setTextColor(Color.BLACK);
-            viewHolder.tvLvtwoLikesCount.setText("" + lmSkipEntity.getData().getPosts().get(position).getLikes_count());
-            viewHolder.tvLvtwoLikesCount.setTextColor(Color.BLACK);
-            tool.getImg(lmSkipEntity.getData().getPosts().get(position).getCover_image_url(), viewHolder.ivLvtwo);
-        } else {
             viewHolder.tvLvtwoTitle.setText(lmSkipEntity.getData().getPosts().get(position).getTitle());
             viewHolder.tvLvtwoTitle.setTextColor(Color.BLACK);
             viewHolder.tvLvtwoNickName.setText(lmSkipEntity.getData().getPosts().get(position).getAuthor().getNickname());
             viewHolder.tvLvtwoLikesCount.setText("" + lmSkipEntity.getData().getPosts().get(position).getLikes_count());
             viewHolder.tvLvtwoLikesCount.setTextColor(Color.BLACK);
             tool.getImg(lmSkipEntity.getData().getPosts().get(position).getCover_image_url(), viewHolder.ivLvtwo);
-        }
         return convertView;
     }
 

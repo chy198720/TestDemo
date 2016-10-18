@@ -82,7 +82,7 @@ public class PopAdapter extends BaseAdapter{
         }
 
         popHolder.mPop_text.setText(mHomeBean.getData().getChannels().get(i).getName());
-        popHolder.mPop_text.setTextColor(Color.BLACK);
+        popHolder.mPop_text.setTextColor(Color.RED);
 
 
         return view;

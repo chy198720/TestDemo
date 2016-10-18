@@ -7,6 +7,8 @@ import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.AdapterView;
+import android.widget.AdapterView.OnItemClickListener;
 import android.widget.EditText;
 import android.widget.GridView;
 import android.widget.TextView;
@@ -69,6 +71,7 @@ public class HomeEditActivity extends BaseActivity implements OnClickListener {
         mTextView = bindView(R.id.text_et);
         mGridView = bindView(R.id.et_Grid_view);
         mTextView.setOnClickListener(this);
+        mEditText.setOnClickListener(this);
     }
 
     @Override
@@ -121,12 +124,19 @@ public class HomeEditActivity extends BaseActivity implements OnClickListener {
 
         mTool.getData(URLValues.EDITTEXT, EditBean.class, new NetInterface<EditBean>() {
             @Override
-            public void onSuccess(EditBean boxBean) {
+            public void onSuccess(final EditBean boxBean) {
                 HomeEditAdapter adapter = new HomeEditAdapter();
                 mEditText.setHint(boxBean.getData().getPlaceholder());
                 mEditText.setTextSize(10);
                 adapter.setBoxBeen(boxBean);
                 mGridView.setAdapter(adapter);
+
+                mGridView.setOnItemClickListener(new OnItemClickListener() {
+                    @Override
+                    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                        mEditText.setText(boxBean.getData().getHot_words().get(i).getWord());
+                    }
+                });
             }
 
             @Override
@@ -148,4 +158,5 @@ public class HomeEditActivity extends BaseActivity implements OnClickListener {
                 break;
         }
     }
+
 }
